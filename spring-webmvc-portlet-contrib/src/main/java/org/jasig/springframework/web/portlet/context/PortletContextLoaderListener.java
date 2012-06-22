@@ -33,11 +33,6 @@ import org.springframework.web.context.WebApplicationContext;
  * {@link org.springframework.web.util.Log4jConfigListener}
  * in <code>web.xml</code>, if the latter is used.
  *
- * <p>As of Spring 3.1, {@code ContextLoaderListener} supports injecting the root web
- * application context via the {@link #ContextLoaderListener(WebApplicationContext)}
- * constructor, allowing for programmatic configuration in Servlet 3.0+ environments. See
- * {@link org.springframework.web.WebApplicationInitializer} for usage examples.
- *
  * @author Juergen Hoeller
  * @author Chris Beams
  * @since 17.02.2003
@@ -52,7 +47,7 @@ public class PortletContextLoaderListener implements ServletContextListener {
         final ServletContext servletContext = sce.getServletContext();
         if (servletContext.getAttribute(PortletApplicationContextUtils2.ROOT_PORTLET_APPLICATION_CONTEXT_LOADER_ATTRIBUTE) != null) {
             throw new IllegalStateException(
-                    "Cannot initialize root portlet ContextLoader context because there is already a root portlet ContextLoader present - " +
+                    "Cannot initialize root portlet ContextLoader context because there is already a root PortletContextLoader present - " +
                     "check whether you have multiple PortletContextLoaderListener definitions in your web.xml!");
         }
         

@@ -39,15 +39,16 @@ import javax.portlet.filter.PortletFilter;
 import javax.portlet.filter.RenderFilter;
 import javax.portlet.filter.ResourceFilter;
 
+import org.jasig.springframework.web.portlet.context.PortletApplicationContextUtils2;
 import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.portlet.context.PortletApplicationContextUtils;
 
 /**
  * @author Eric Dalquist
  * @version $Revision: 23744 $
  */
-public class DelegatingPortletFilterProxy extends GenericPortletFilterBean implements
-    ActionFilter, EventFilter, RenderFilter, ResourceFilter {
+public class DelegatingPortletFilterProxy extends GenericPortletFilterBean {
 
     private String targetBeanName;
 
@@ -188,16 +189,19 @@ public class DelegatingPortletFilterProxy extends GenericPortletFilterBean imple
 
 
     /**
-     * Retrieve a <code>WebApplicationContext</code> from the <code>PortletContext</code>
-     * attribute with the {@link #setContextAttribute configured name}. The
+     * Retrieve a <code>WebApplicationContext</code> from the <code>PortletContext</code>. The
      * <code>WebApplicationContext</code> must have already been loaded and stored in the
      * <code>PortletContext</code> before this filter gets initialized (or invoked).
      * <p>Subclasses may override this method to provide a different
      * <code>WebApplicationContext</code> retrieval strategy.
      * @return the WebApplicationContext for this proxy, or <code>null</code> if not found
-     * @see #getContextAttribute()
      */
     protected ApplicationContext findWebApplicationContext() {
+        final WebApplicationContext portletApplicationContext = PortletApplicationContextUtils2.getPortletApplicationContext(getPortletContext());
+        if (portletApplicationContext != null) {
+            return portletApplicationContext;
+        }
+        
         return PortletApplicationContextUtils.getWebApplicationContext(getPortletContext());
     }
 

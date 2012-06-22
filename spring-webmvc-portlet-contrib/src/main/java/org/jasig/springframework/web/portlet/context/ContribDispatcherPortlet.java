@@ -25,8 +25,8 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.portlet.DispatcherPortlet;
 
 /**
- * Extension to {@link DispatcherPortlet} that adds support for the portlet app level
- * context
+ * Extension to {@link DispatcherPortlet} that adds support for a portlet application level
+ * spring context.
  * 
  * @author Eric Dalquist
  */
@@ -53,7 +53,6 @@ public class ContribDispatcherPortlet extends DispatcherPortlet {
             logger.info("No PortletContextLoader found, skipping load of portlet-app level context. See org.jasig.springframework.web.portlet.context.PortletContextLoaderListener for more information");
             return super.createPortletApplicationContext(parent);
         }
-        
         
         WebApplicationContext parentPortletApplicationContext;
         synchronized (portletContextLoader) {

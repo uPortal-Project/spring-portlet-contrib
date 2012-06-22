@@ -300,7 +300,6 @@ public class PortletContextLoader {
             wac.setConfigLocation(initParameter);
         }
         else {
-            //TODO set to portletApplicationContext.xml
             wac.setConfigLocation("/WEB-INF/portletApplicationContext.xml");
         }
         customizeContext(pc, wac);
