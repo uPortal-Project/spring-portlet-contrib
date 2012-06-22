@@ -8,19 +8,19 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.jasig.portlet.utils</groupId>
-    <artifactId>portlet-utils-parent</artifactId>
-    <version>1.0.0-M2-SNAPSHOT</version>
+    <groupId>org.jasig.springframework</groupId>
+    <artifactId>spring-portlet-contrib</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>Portlet Utils Parent</name>
-    <description>The root project definition for the Portlet Utils project.</description>
-    <url>${jasig-site-base}/portlet-utils/${project.version}</url>
+    <name>Spring Portlet Contributions Parent</name>
+    <description>The root project definition for the Spring Portlet Contributions Projects.</description>
+    <url>${jasig-site-base}/spring-portlet-contrib/${project.version}</url>
     
     <scm>
-        <connection>scm:git:git://github.com/Jasig/PortletUtils.git</connection>
-        <developerConnection>scm:git:git@github.com:Jasig/PortletUtils.git</developerConnection>
-        <url>https://github.com/Jasig/PortletUtils</url>
+        <connection>scm:git:git://github.com/Jasig/spring-portlet-contrib.git</connection>
+        <developerConnection>scm:git:git@github.com:Jasig/spring-portlet-contrib.git</developerConnection>
+        <url>https://github.com/Jasig/spring-portlet-contrib</url>
     </scm>
 
     <issueManagement>
@@ -62,31 +62,149 @@
         </pluginRepository>
     </pluginRepositories>
 
-
+    <!-- Dependency Version Properties -->
     <properties>
         <project.build.sourceVersion>1.6</project.build.sourceVersion>
         <project.build.targetVersion>1.6</project.build.targetVersion>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <commons-lang.version>2.6</commons-lang.version>
+        <commons-logging.version>1.1.1</commons-logging.version>
+        <guava.version>12.0</guava.version>
+        <jstl.version>1.2</jstl.version>
+        <taglibs-standard.version>1.1.2</taglibs-standard.version>
+        <junit.version>4.10</junit.version>
+        <logback.version>1.0.6</logback.version>
+        <mockito.version>1.9.0</mockito.version>
+        <portlet-api.version>2.0</portlet-api.version>
+        <resource-server.version>1.0.25</resource-server.version>
+        <servlet-api.version>2.5</servlet-api.version>
+        <spring.version>3.1.1.RELEASE</spring.version>
+        <spring-security.version>3.1.0.RELEASE</spring-security.version>
+        <slf4j.version>1.6.6</slf4j.version>
     </properties>
 
     <modules>
         <module>spring-webmvc-portlet-contrib</module>
         <module>spring-security-portlet-contrib</module>
-        <module>portal-rest-api</module>
-        <module>portlet-form-resources</module>
+        <module>ContribTestPortlet</module>
     </modules>
-
+    
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.jvnet.jaxb2_commons</groupId>
-                <artifactId>jaxb2-basics</artifactId>
-                <version>0.6.3</version>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${logback.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.jvnet.jaxb2_commons</groupId>
-                <artifactId>jaxb2-basics-runtime</artifactId>
-                <version>0.6.3</version>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>${commons-logging.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.portlet</groupId>
+                <artifactId>portlet-api</artifactId>
+                <version>${portlet-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>jstl</artifactId>
+                <version>${jstl.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>servlet-api</artifactId>
+                <version>${servlet-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jasig.resourceserver</groupId>
+                <artifactId>resource-server-utils</artifactId>
+                <version>${resource-server.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${mockito.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jcl-over-slf4j</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-aop</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-beans</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-webmvc</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-webmvc-portlet</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-test</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-core</artifactId>
+                <version>${spring-security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-web</artifactId>
+                <version>${spring-security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>taglibs</groupId>
+                <artifactId>standard</artifactId>
+                <version>${taglibs-standard.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -104,7 +222,7 @@
                         <configuration>
                             <rules>
                             <requireMavenVersion>
-                              <version>2.2</version>
+                              <version>3.0</version>
                             </requireMavenVersion>
                             <requireJavaVersion>
                               <version>1.6</version>
@@ -115,108 +233,6 @@
                 </executions>
             </plugin>
         </plugins>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <artifactId>maven-clean-plugin</artifactId>
-                    <version>2.4.1</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>2.3.2</version>
-                    <configuration>
-                        <encoding>${project.build.sourceEncoding}</encoding>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-deploy-plugin</artifactId>
-                    <version>2.6</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-ear-plugin</artifactId>
-                    <version>2.6</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-enforcer-plugin</artifactId>
-                    <version>1.0.1</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-install-plugin</artifactId>
-                    <version>2.3.1</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <version>2.3.1</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-resources-plugin</artifactId>
-                    <version>2.5</version>
-                </plugin>
-                <plugin>
-                    <groupId>com.mycila.maven-license-plugin</groupId>
-                    <artifactId>maven-license-plugin</artifactId>
-                    <configuration>
-                        <aggregate>true</aggregate>
-                        <excludes>
-                            <exclude>**/.gitignore</exclude>
-                            <exclude>pom.xml.*</exclude>
-                            <exclude>release.properties</exclude>
-                            <exclude>LICENSE</exclude>
-                            <exclude>**/NOTICE</exclude>
-                            <exclude>NOTICE.template</exclude>
-                            <exclude>bin/**</exclude>
-                        </excludes>
-                        <mapping>
-                            <xjb>XML_STYLE</xjb>
-                        </mapping>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.jasig.maven</groupId>
-                    <artifactId>maven-site-plugin</artifactId>
-                    <configuration>
-                        <defaultMergePolicy>MERGE</defaultMergePolicy>
-                        <reportPlugins combine.children="append">
-                            <plugin>
-                                <artifactId>maven-javadoc-plugin</artifactId>
-                                <version>2.8</version>
-                                <configuration>
-                                    <links merge:children="BOTH" merge:removeDuplicates="true">
-                                        <link>http://java.sun.com/javase/6/docs/api/</link>
-                                        <link>http://java.sun.com/javaee/5/docs/api/</link>
-                                        <link>http://portals.apache.org/pluto/portlet-2.0-apidocs/</link>
-                                        <link>http://portals.apache.org/pluto/pluto-container/apidocs/</link>
-                                        <link>http://portals.apache.org/pluto/pluto-descriptor-api/apidocs/</link>
-                                        <link>http://static.springsource.org/spring/docs/3.0.x/javadoc-api/</link>
-                                        <link>http://static.springframework.org/spring-ldap/docs/1.2.0/api/spring-ldap/</link>
-                                        <link>http://developer.jasig.org/projects/person-directory/1.5.0-RC2/apidocs/</link>
-                                    </links>
-                                    <maxmemory>768m</maxmemory>
-                                </configuration>
-                            </plugin>
-                        </reportPlugins>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-source-plugin</artifactId>
-                    <version>2.1.2</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.9</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-release-plugin</artifactId>
-                    <version>2.3</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.jasig.maven</groupId>
-                    <artifactId>maven-notice-plugin</artifactId>
-                    <version>1.0.5</version>
-                </plugin>
-            </plugins>
-        </pluginManagement>
     </build>
 
     <profiles>
