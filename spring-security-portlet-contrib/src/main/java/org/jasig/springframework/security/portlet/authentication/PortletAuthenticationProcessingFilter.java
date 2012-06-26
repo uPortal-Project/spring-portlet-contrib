@@ -46,7 +46,8 @@ import org.springframework.util.Assert;
 
 /**
  * Based on {@link AbstractPreAuthenticatedProcessingFilter} and the PortletProcessingInterceptor from
- * Spring Security 2.0
+ * Spring Security 2.0. The {@link Authentication} implementation used is {@link PreAuthenticatedAuthenticationToken}
+ * as all portlet requests are pre-authenticated by the container.
  * 
  * <p>This filter is responsible for processing portlet authentication requests.  This
  * is the portlet equivalent of the <code>AbstractPreAuthenticatedProcessingFilter</code> used for
@@ -92,7 +93,7 @@ public class PortletAuthenticationProcessingFilter
         implements ApplicationEventPublisherAware {
 
     private ApplicationEventPublisher eventPublisher = null;
-    private AuthenticationDetailsSource<PortletRequest, ?> authenticationDetailsSource = new PortletAuthenticationDetailsSource();
+    private AuthenticationDetailsSource<PortletRequest, ?> authenticationDetailsSource = new PortletPreAuthenticatedAuthenticationDetailsSource();
     private AuthenticationManager authenticationManager = null;
     private boolean continueFilterChainOnUnsuccessfulAuthentication = true;
     private boolean checkForPrincipalChanges;
@@ -297,6 +298,7 @@ public class PortletAuthenticationProcessingFilter
      * 
      * Returns null if no principal is found  
      */
+    @SuppressWarnings("unchecked")
     protected Object getPreAuthenticatedPrincipal(PortletRequest request) {
 
         // first try getRemoteUser()

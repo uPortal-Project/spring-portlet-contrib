@@ -53,5 +53,19 @@
             <portlet-mode>view</portlet-mode>
         </supports>
     </portlet>
- 
+    
+    <filter>
+        <filter-name>springSecurityPortletFilterChain</filter-name>
+        <filter-class>org.jasig.springframework.web.portlet.filter.DelegatingPortletFilterProxy</filter-class>
+        <lifecycle>ACTION_PHASE</lifecycle>
+        <lifecycle>EVENT_PHASE</lifecycle>
+        <lifecycle>RENDER_PHASE</lifecycle>
+        <lifecycle>RESOURCE_PHASE</lifecycle>
+    </filter>
+    
+    <filter-mapping>
+        <filter-name>springSecurityPortletFilterChain</filter-name>
+        <portlet-name>*</portlet-name>
+    </filter-mapping>
+    
 </portlet-app>

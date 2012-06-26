@@ -30,5 +30,39 @@
     <bean class="org.jasig.portlet.spring.portlet.test.ServletPortletAwareTester">
         <constructor-arg value="portletApplicationContext" />
     </bean>
+    
+    <bean id="springSecurityPortletFilterChain" class="org.jasig.springframework.security.portlet.PortletFilterChainProxy">
+        <constructor-arg>
+            <bean class="org.jasig.springframework.security.portlet.DefaultPortletSecurityFilterChain">
+                <constructor-arg>
+                    <bean class="org.jasig.springframework.security.portlet.util.AnyRequestMatcher" />
+                </constructor-arg>
+                <constructor-arg>
+                    <list>
+                        <bean class="org.jasig.springframework.security.portlet.context.PortletSecurityContextPersistenceFilter" />
+                        <bean class="org.jasig.springframework.security.portlet.authentication.PortletAuthenticationProcessingFilter">
+                            <property name="authenticationDetailsSource">
+                                <bean class="org.jasig.springframework.security.portlet.authentication.PortletPreAuthenticatedAuthenticationDetailsSource">
+                                    <property name=""></property>
+                                </bean>
+                            </property>
+                            <property name="authenticationManager">
+                                <bean class="org.springframework.security.authentication.ProviderManager">
+                                    <constructor-arg>
+                                        <bean class="org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider">
+                                            <property name="preAuthenticatedUserDetailsService">
+                                                <!-- replace with custom impl or ext to add your own GrantedAuthorities -->
+                                                <bean class="org.springframework.security.web.authentication.preauth.PreAuthenticatedGrantedAuthoritiesUserDetailsService" />
+                                            </property>
+                                        </bean>
+                                    </constructor-arg>
+                                </bean>
+                            </property>
+                        </bean>
+                    </list>
+                </constructor-arg>
+            </bean>
+        </constructor-arg>
+    </bean>
 
 </beans>
