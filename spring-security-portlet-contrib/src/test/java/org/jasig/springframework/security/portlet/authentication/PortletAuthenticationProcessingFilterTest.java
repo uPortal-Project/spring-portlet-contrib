@@ -37,6 +37,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.mock.web.portlet.MockRenderRequest;
 import org.springframework.mock.web.portlet.MockRenderResponse;
+import org.springframework.security.authentication.AuthenticationDetailsSource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -59,6 +60,8 @@ public class PortletAuthenticationProcessingFilterTest {
         FilterChain chain = mock(FilterChain.class);
         PortletAuthenticationProcessingFilter filter = new PortletAuthenticationProcessingFilter();
         filter.setAuthenticationManager(createAuthenticationManager());
+        filter.setAuthenticationDetailsSource(createAuthenticationDetailsSource());
+        filter.afterPropertiesSet();
 
         filter.doFilter(request, response, chain);
         assertNotNull(SecurityContextHolder.getContext().getAuthentication());
@@ -74,7 +77,9 @@ public class PortletAuthenticationProcessingFilterTest {
         FilterChain chain = mock(FilterChain.class);
         PortletAuthenticationProcessingFilter filter = new PortletAuthenticationProcessingFilter();
         filter.setAuthenticationManager(createAuthenticationManager());
+        filter.setAuthenticationDetailsSource(createAuthenticationDetailsSource());
         filter.setUserNameAttributes(Arrays.asList("myUsernameHeader"));
+        filter.afterPropertiesSet();
 
         filter.doFilter(request, response, chain);
         assertNotNull(SecurityContextHolder.getContext().getAuthentication());
@@ -88,7 +93,9 @@ public class PortletAuthenticationProcessingFilterTest {
         FilterChain chain = mock(FilterChain.class);
         PortletAuthenticationProcessingFilter filter = new PortletAuthenticationProcessingFilter();
         filter.setAuthenticationManager(createAuthenticationManager());
+        filter.setAuthenticationDetailsSource(createAuthenticationDetailsSource());
         filter.setUserNameAttributes(Arrays.asList("myCredentialsHeader"));
+        filter.afterPropertiesSet();
         request.setRemoteUser("cat");
         request.setAttribute(PortletRequest.USER_INFO, ImmutableMap.of("myCredentialsHeader", "catspassword"));
 
@@ -104,7 +111,9 @@ public class PortletAuthenticationProcessingFilterTest {
         FilterChain chain = mock(FilterChain.class);
         PortletAuthenticationProcessingFilter filter = new PortletAuthenticationProcessingFilter();
         filter.setAuthenticationManager(createAuthenticationManager());
+        filter.setAuthenticationDetailsSource(createAuthenticationDetailsSource());
         filter.setCheckForPrincipalChanges(true);
+        filter.afterPropertiesSet();
         request.setRemoteUser("cat");
         filter.doFilter(request, response, chain);
         request = new MockRenderRequest();
@@ -126,6 +135,8 @@ public class PortletAuthenticationProcessingFilterTest {
         FilterChain chain = mock(FilterChain.class);
         PortletAuthenticationProcessingFilter filter = new PortletAuthenticationProcessingFilter();
         filter.setAuthenticationManager(createAuthenticationManager());
+        filter.setAuthenticationDetailsSource(createAuthenticationDetailsSource());
+        filter.afterPropertiesSet();
         filter.doFilter(request, response, chain);
     }
 
@@ -141,5 +152,14 @@ public class PortletAuthenticationProcessingFilterTest {
         });
 
         return am;
+    }
+
+    /**
+     * Create an authentication manager which returns the passed in object.
+     */
+    private AuthenticationDetailsSource<PortletRequest, ?> createAuthenticationDetailsSource() {
+        @SuppressWarnings("unchecked")
+        AuthenticationDetailsSource<PortletRequest, ?> ads = mock(AuthenticationDetailsSource.class);
+        return ads;
     }
 }

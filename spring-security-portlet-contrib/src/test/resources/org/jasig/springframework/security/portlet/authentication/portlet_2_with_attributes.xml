@@ -38,45 +38,13 @@
             <mime-type>text/html</mime-type>
             <portlet-mode>view</portlet-mode>
         </supports>
-        
-        
         <security-role-ref>
-            <role-name>Everyone</role-name>
+        	<role-name>name1</role-name>
+        	<role-link>link1</role-link>
         </security-role-ref>
         <security-role-ref>
-            <role-name>EveryoneLink</role-name>
-            <role-link>local.0</role-link>
-        </security-role-ref>
-        
-        <security-role-ref>
-            <role-name>AllUsersPAGS</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>AllUsersPAGSlink</role-name>
-            <role-link>pags.all_users</role-link>
-        </security-role-ref>
-        
-        <security-role-ref>
-            <role-name>PortalAdministrators</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>PortalAdministratorslink</role-name>
-            <role-link>local.2</role-link>
-        </security-role-ref>
-        
-        <security-role-ref>
-            <role-name>Developers</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>Guests</role-name>
-        </security-role-ref>
-
-        <security-role-ref>
-            <role-name>UnDefinedInPortal</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>UnDefinedInPortallink</role-name>
-            <role-link>local.UnDefinedInPortal</role-link>
+        	<role-name>name2</role-name>
+        	<role-link>link2</role-link>
         </security-role-ref>
     </portlet>
     
@@ -92,6 +60,14 @@
             <mime-type>text/html</mime-type>
             <portlet-mode>view</portlet-mode>
         </supports>
+        <security-role-ref>
+        	<role-name>name2</role-name>
+        	<role-link>link2</role-link>
+        </security-role-ref>
+        <security-role-ref>
+        	<role-name>name3</role-name>
+        	<role-link>link3</role-link>
+        </security-role-ref>
     </portlet>
     
     <filter>

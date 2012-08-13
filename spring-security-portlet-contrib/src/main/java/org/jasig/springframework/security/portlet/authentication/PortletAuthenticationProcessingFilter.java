@@ -93,7 +93,7 @@ public class PortletAuthenticationProcessingFilter
         implements ApplicationEventPublisherAware {
 
     private ApplicationEventPublisher eventPublisher = null;
-    private AuthenticationDetailsSource<PortletRequest, ?> authenticationDetailsSource = new PortletPreAuthenticatedAuthenticationDetailsSource();
+    private AuthenticationDetailsSource<PortletRequest, ?> authenticationDetailsSource;
     private AuthenticationManager authenticationManager = null;
     private boolean continueFilterChainOnUnsuccessfulAuthentication = true;
     private boolean checkForPrincipalChanges;
@@ -108,6 +108,7 @@ public class PortletAuthenticationProcessingFilter
     @Override
     public void afterPropertiesSet() {
         Assert.notNull(authenticationManager, "An AuthenticationManager must be set");
+        Assert.notNull(authenticationDetailsSource, "An AuthenticationDetailsSource must be set");
     }
     
     /**

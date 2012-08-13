@@ -30,8 +30,7 @@ public class PreAuthenticatedGrantedAuthoritiesPortletAuthenticationDetails exte
             Collection<? extends GrantedAuthority> authorities) {
         super(request);
 
-        List<GrantedAuthority> temp = new ArrayList<GrantedAuthority>(authorities.size());
-        temp.addAll(authorities);
+        List<GrantedAuthority> temp = new ArrayList<GrantedAuthority>(authorities);
         this.authorities = Collections.unmodifiableList(temp);
     }
 
