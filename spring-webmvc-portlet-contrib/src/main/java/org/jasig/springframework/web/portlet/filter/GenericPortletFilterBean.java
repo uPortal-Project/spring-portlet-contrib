@@ -45,6 +45,7 @@ import javax.portlet.filter.ResourceFilter;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jasig.springframework.web.portlet.context.PortletApplicationContextUtils2;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.MutablePropertyValues;
@@ -61,12 +62,34 @@ import org.springframework.core.io.ResourceEditor;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
-import org.springframework.web.context.support.StandardServletEnvironment;
 import org.springframework.web.portlet.context.PortletContextAware;
 import org.springframework.web.portlet.context.PortletContextResourceLoader;
 import org.springframework.web.portlet.context.StandardPortletEnvironment;
 
 /**
+ * Simple base implementation of {@link ActionFilter}, {@link EventFilter},
+ * {@link RenderFilter}, and {@link ResourceFilter} which treats its config
+ * parameters (<code>init-param</code> entries within the <code>filter</code>
+ * tag in <code>portlet.xml</code>) as bean properties.
+ *
+ * <p>A handy superclass for any type of filter. Type conversion of config
+ * parameters is automatic, with the corresponding setter method getting
+ * invoked with the converted value. It is also possible for subclasses to
+ * specify required properties. Parameters without matching bean property
+ * setter will simply be ignored.
+ *
+ * <p>This filter leaves actual filtering to subclasses, which have to
+ * override the <code>doFilter</code> method(s) the correspond to the portlet
+ * filter interface(s) being used. 
+ *
+ * <p>This generic filter base class has no dependency on the Spring
+ * {@link org.springframework.context.ApplicationContext} concept.
+ * Filters usually don't load their own context but rather access service
+ * beans from the Spring root application context, accessible via the
+ * filter's {@link #getPortletContext() PortletContext} (see
+ * {@link PortletApplicationContextUtils2}).
+ *
+ *
  * @author Eric Dalquist
  * @version $Revision: 23744 $
  */
@@ -106,7 +129,7 @@ public abstract class GenericPortletFilterBean implements
 
     /**
      * {@inheritDoc}
-     * <p>Any environment set here overrides the {@link StandardServletEnvironment}
+     * <p>Any environment set here overrides the {@link StandardPortletEnvironment}
      * provided by default.
      * <p>This {@code Environment} object is used only for resolving placeholders in
      * resource paths passed into init-parameters for this filter. If no init-params are

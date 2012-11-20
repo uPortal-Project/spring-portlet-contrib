@@ -38,21 +38,61 @@ import javax.portlet.filter.FilterChain;
 import javax.portlet.filter.PortletFilter;
 import javax.portlet.filter.RenderFilter;
 import javax.portlet.filter.ResourceFilter;
+import javax.servlet.Filter;
 
+import org.jasig.springframework.web.portlet.context.PortletApplicationContext;
 import org.jasig.springframework.web.portlet.context.PortletApplicationContextUtils2;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.portlet.context.PortletApplicationContextUtils;
 
 /**
+ * Proxy for a standard Portlet 2.0 Filter, delegating to a Spring-managed
+ * bean that implements the Filter interface. Supports a "targetBeanName"
+ * filter init-param in {@code portlet.xml}, specifying the name of the
+ * target bean in the Spring application context.
+ *
+ * <p>{@code portlet.xml} will usually contain a {@code DelegatingPortletFilterProxy}
+ * definition, with the specified {@code filter-name} corresponding to a bean name in
+ * Spring's root portlet application context. All calls to the filter proxy will then
+ * be delegated to that bean in the Spring context, which is required to implement
+ * the standard Portlet 2.0 Filter interface.
+ *
+ * <p>This approach is particularly useful for Filter implementation with complex
+ * setup needs, allowing to apply the full Spring bean definition machinery to
+ * Filter instances. Alternatively, consider standard Filter setup in combination
+ * with looking up service beans from the Spring root application context.
+ *
+ * <p><b>NOTE:</b> The lifecycle methods defined by the Portlet Filter interface
+ * will by default <i>not</i> be delegated to the target bean, relying on the
+ * Spring application context to manage the lifecycle of that bean. Specifying
+ * the "targetFilterLifecycle" filter init-param as "true" will enforce invocation
+ * of the {@code PortletFilter.init} and {@code PortletFilter.destroy} lifecycle methods
+ * on the target bean, letting the portlet container manage the filter lifecycle.
+ *
+ * <p>This class was originally inspired by Spring's {@code DelegatingFilterProxy}
+ *
  * @author Eric Dalquist
- * @version $Revision: 23744 $
+ * @see #setTargetBeanName
+ * @see #setTargetFilterLifecycle
+ * @see javax.portlet.filter.ActionFilter#doFilter
+ * @see javax.portlet.filter.EventFilter#doFilter
+ * @see javax.portlet.filter.RenderFilter#doFilter
+ * @see javax.portlet.filter.ResourceFilter#doFilter
+ * @see javax.portlet.filter.PortletFilter#init
+ * @see javax.portlet.filter.PortletFilter#destroy
+ * @see #DelegatingFilterProxy(Filter)
+ * @see #DelegatingFilterProxy(String)
+ * @see #DelegatingFilterProxy(String, WebApplicationContext)
+ * @see org.springframework.web.WebApplicationInitializer
  */
 public class DelegatingPortletFilterProxy extends GenericPortletFilterBean {
 
     private String targetBeanName;
 
     private boolean targetFilterLifecycle = false;
+    
+    private String contextAttribute;
 
     private PortletFilter delegate;
     private ActionFilter actionDelegate;
@@ -66,10 +106,26 @@ public class DelegatingPortletFilterProxy extends GenericPortletFilterBean {
 
 
     /**
+     * Set the name of the ServletContext attribute which should be used to retrieve the
+     * {@link PortletApplicationContext} from which to load the delegate {@link PortletFilter} bean.
+     */
+    public void setContextAttribute(String contextAttribute) {
+        this.contextAttribute = contextAttribute;
+    }
+
+    /**
+     * Return the name of the ServletContext attribute which should be used to retrieve the
+     * {@link PortletApplicationContext} from which to load the delegate {@link PortletFilter} bean.
+     */
+    public String getContextAttribute() {
+        return this.contextAttribute;
+    }
+
+    /**
      * Set the name of the target bean in the Spring application context.
-     * The target bean must implement the standard Portlet 2.3 PortletFilter interface.
+     * The target bean must implement the standard Portlet 2.0 PortletFilter interface.
      * <p>By default, the <code>filter-name</code> as specified for the
-     * DelegatingPortletFilterProxy in <code>web.xml</code> will be used.
+     * DelegatingPortletFilterProxy in <code>portlet.xml</code> will be used.
      */
     public void setTargetBeanName(String targetBeanName) {
         this.targetBeanName = targetBeanName;
@@ -197,7 +253,15 @@ public class DelegatingPortletFilterProxy extends GenericPortletFilterBean {
      * @return the WebApplicationContext for this proxy, or <code>null</code> if not found
      */
     protected ApplicationContext findWebApplicationContext() {
-        final WebApplicationContext portletApplicationContext = PortletApplicationContextUtils2.getPortletApplicationContext(getPortletContext());
+        String attrName = getContextAttribute();
+        final PortletApplicationContext portletApplicationContext;
+        if (attrName != null) {
+            portletApplicationContext = PortletApplicationContextUtils2.getPortletApplicationContext(getPortletContext(), attrName);
+        }
+        else {
+            portletApplicationContext = PortletApplicationContextUtils2.getPortletApplicationContext(getPortletContext());
+        }
+        
         if (portletApplicationContext != null) {
             return portletApplicationContext;
         }
@@ -217,7 +281,7 @@ public class DelegatingPortletFilterProxy extends GenericPortletFilterBean {
      * @see #getTargetBeanName()
      * @see #isTargetFilterLifecycle()
      * @see #getFilterConfig()
-     * @see javax.portlet.PortletFilter#init(javax.portlet.FilterConfig)
+     * @see javax.portlet.filter.PortletFilter#init(javax.portlet.filter.FilterConfig)
      */
     protected void initDelegate(boolean require) throws PortletException {
         final ApplicationContext wac = findWebApplicationContext();
@@ -350,7 +414,7 @@ public class DelegatingPortletFilterProxy extends GenericPortletFilterBean {
      * Default implementation simply calls <code>PortletFilter.destroy</code> on it.
      * @param delegate the PortletFilter delegate (never <code>null</code>)
      * @see #isTargetFilterLifecycle()
-     * @see javax.portlet.PortletFilter#destroy()
+     * @see javax.portlet.filter.PortletFilter#destroy()
      */
     protected void destroyDelegate(PortletFilter delegate) {
         if (isTargetFilterLifecycle()) {

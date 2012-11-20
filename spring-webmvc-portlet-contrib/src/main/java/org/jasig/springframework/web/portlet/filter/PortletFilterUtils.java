@@ -49,7 +49,7 @@ public final class PortletFilterUtils {
     
     /**
      * Call doFilter and use the {@link PortletRequest#LIFECYCLE_PHASE} attribute to figure out what
-     * type of request/response are in use and call the appropriate doFilter on {@link FilterChain}
+     * type of request/response are in use and call the appropriate doFilter method on {@link FilterChain}
      */
     public static void doFilter(PortletRequest request, PortletResponse response, FilterChain chain)
             throws IOException, PortletException {

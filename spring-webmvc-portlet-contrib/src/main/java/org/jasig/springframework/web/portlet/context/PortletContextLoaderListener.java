@@ -23,21 +23,16 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import org.springframework.web.context.ContextCleanupListener;
-import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.ContextLoaderListener;
 
 /**
- * Bootstrap listener to start up and shut down Spring's root {@link WebApplicationContext}.
+ * Bootstrap listener to start up and shut down Spring's root {@link PortletApplicationContext}.
  * Simply delegates to {@link PortletContextLoader} as well as to {@link ContextCleanupListener}.
+ * 
+ * <p>This class is configured in the <code>web.xml</code> of the application and MUST be
+ * registered after the {@link ContextLoaderListener}
  *
- * <p>This listener should be registered after
- * {@link org.springframework.web.util.Log4jConfigListener}
- * in <code>web.xml</code>, if the latter is used.
- *
- * @author Juergen Hoeller
- * @author Chris Beams
- * @since 17.02.2003
- * @see org.springframework.web.WebApplicationInitializer
- * @see org.springframework.web.util.Log4jConfigListener
+ * @author Eric Dalquist
  */
 public class PortletContextLoaderListener implements ServletContextListener {
     private PortletContextLoader contextLoader;
@@ -52,7 +47,7 @@ public class PortletContextLoaderListener implements ServletContextListener {
         }
         
         //Register the portlet context loader with the servlet context
-        contextLoader = new PortletContextLoader();
+        contextLoader = new PortletContextLoader(servletContext);
         servletContext.setAttribute(PortletApplicationContextUtils2.ROOT_PORTLET_APPLICATION_CONTEXT_LOADER_ATTRIBUTE, contextLoader);
     }
 
