@@ -36,8 +36,7 @@ public class SecurityTestController {
         return "displayUserInfo";
     }
     
-//    @PreAuthorize("hasRole('ROLE_Everyone')")
-    @Secured({"ROLE_Everyone"})
+    @Secured({"ROLE_EveryoneId"})
     @RenderMapping(params = "preAuth=everyone")
     public String displayUserInfoEveryone(ModelMap model) {
         final SecurityContext context = SecurityContextHolder.getContext();
@@ -59,8 +58,7 @@ public class SecurityTestController {
         return "displayUserInfo";
     }
     
-//    @PreAuthorize("hasRole('ROLE_Admin')")
-    @Secured({"ROLE_Admin"})
+    @PreAuthorize("hasRole('ROLE_PortalAdministratorsName')")
     @RenderMapping(params = "preAuth=admin")
     public String displayUserInfoAdmin(ModelMap model) {
         final SecurityContext context = SecurityContextHolder.getContext();

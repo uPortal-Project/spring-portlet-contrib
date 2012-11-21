@@ -29,10 +29,6 @@
     <portlet>
         <portlet-name>ContextTestPortlet</portlet-name>
         <portlet-class>org.jasig.springframework.web.portlet.context.ContribDispatcherPortlet</portlet-class>
-        <init-param>
-            <name>contextConfigLocation</name>
-            <value>/WEB-INF/context/portlet/ContextTestPortlet-portlet.xml</value>
-        </init-param>
         <expiration-cache>0</expiration-cache>
         <supports>
             <mime-type>text/html</mime-type>
@@ -41,31 +37,35 @@
         
         
         <security-role-ref>
-            <role-name>Everyone</role-name>
+            <role-name>EveryoneName</role-name>
+            <role-link>Everyone</role-link>
         </security-role-ref>
         <security-role-ref>
-            <role-name>EveryoneLink</role-name>
+            <role-name>EveryoneId</role-name>
             <role-link>local.0</role-link>
         </security-role-ref>
         
         <security-role-ref>
-            <role-name>AllUsersPAGS</role-name>
+            <role-name>AllUsersPAGSName</role-name>
+            <role-link>All Users (PAGS)</role-link>
         </security-role-ref>
         <security-role-ref>
-            <role-name>AllUsersPAGSlink</role-name>
+            <role-name>AllUsersPAGSId</role-name>
             <role-link>pags.all_users</role-link>
         </security-role-ref>
         
         <security-role-ref>
-            <role-name>PortalAdministrators</role-name>
+            <role-name>PortalAdministratorsName</role-name>
+            <role-link>Portal Administrators</role-link>
         </security-role-ref>
         <security-role-ref>
-            <role-name>PortalAdministratorslink</role-name>
+            <role-name>PortalAdministratorsId</role-name>
             <role-link>local.2</role-link>
         </security-role-ref>
         
         <security-role-ref>
-            <role-name>Developers</role-name>
+            <role-name>PortalDevelopersName</role-name>
+            <role-link>Portal Developers</role-link>
         </security-role-ref>
         <security-role-ref>
             <role-name>Guests</role-name>
@@ -73,6 +73,7 @@
 
         <security-role-ref>
             <role-name>UnDefinedInPortal</role-name>
+            <role-link>UnDefined In Portal</role-link>
         </security-role-ref>
         <security-role-ref>
             <role-name>UnDefinedInPortallink</role-name>
@@ -83,10 +84,6 @@
     <portlet>
         <portlet-name>ContextTestPortlet2</portlet-name>
         <portlet-class>org.jasig.springframework.web.portlet.context.ContribDispatcherPortlet</portlet-class>
-        <init-param>
-            <name>contextConfigLocation</name>
-            <value>/WEB-INF/context/portlet/ContextTestPortlet2-portlet.xml</value>
-        </init-param>
         <expiration-cache>0</expiration-cache>
         <supports>
             <mime-type>text/html</mime-type>
