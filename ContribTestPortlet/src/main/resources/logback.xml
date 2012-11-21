@@ -22,21 +22,21 @@
 
 <configuration scan="true" scanPeriod="30 seconds">
     <appender name="MAIN" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>${catalina.base}/logs/portlets/ExampleSecurityPortlet/ExampleSecurityPortlet.log</File>
+        <File>${catalina.base}/logs/portlets/ContribTestPortlet/ContribTestPortlet.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
-            <fileNamePattern>${catalina.base}/logs/portlets/ExampleSecurityPortlet/ExampleSecurityPortlet.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <fileNamePattern>${catalina.base}/logs/portlets/ContribTestPortlet/ContribTestPortlet.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
         </rollingPolicy>
         <encoder>
             <pattern>%d{ISO8601} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
     
-    <logger name="org.jasig.portlet.spring.portlet.test" level="TRACE" additivity="false">
+    <logger name="org.jasig" level="DEBUG" additivity="false">
         <appender-ref ref="MAIN" />
     </logger>
    
-    <root level="DEBUG">
+    <root level="INFO">
         <appender-ref ref="MAIN" />
     </root>
 </configuration>

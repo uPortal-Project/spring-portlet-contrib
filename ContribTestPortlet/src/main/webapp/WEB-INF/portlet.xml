@@ -27,14 +27,14 @@
     version="2.0">
     
     <portlet>
-        <portlet-name>ContextTestPortlet</portlet-name>
+        <description>Tests Spring Portlet Security Support</description>
+        <portlet-name>SecurityTestPortlet</portlet-name>
         <portlet-class>org.jasig.springframework.web.portlet.context.ContribDispatcherPortlet</portlet-class>
         <expiration-cache>0</expiration-cache>
         <supports>
             <mime-type>text/html</mime-type>
             <portlet-mode>view</portlet-mode>
         </supports>
-        
         
         <security-role-ref>
             <role-name>EveryoneName</role-name>
@@ -82,7 +82,8 @@
     </portlet>
     
     <portlet>
-        <portlet-name>ContextTestPortlet2</portlet-name>
+        <description>Tests Spring App Context Configuration and Lifecycle</description>
+        <portlet-name>ContextTestPortlet</portlet-name>
         <portlet-class>org.jasig.springframework.web.portlet.context.ContribDispatcherPortlet</portlet-class>
         <expiration-cache>0</expiration-cache>
         <supports>

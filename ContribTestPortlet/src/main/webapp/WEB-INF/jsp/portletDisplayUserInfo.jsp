@@ -19,11 +19,24 @@
 
 --%>
 
-<jsp:directive.include file="/WEB-INF/jsp/include.jsp"/>
+<%@ include file="/WEB-INF/jsp/include.jsp" %>
+<%@ taglib prefix="portlet" uri="http://java.sun.com/portlet_2_0" %>
 
 <h2>Hello ${ fn:escapeXml(username) }!</h2>
 
-<p>${renderRequest.parameterMap}</p>
+<p>handler=${handler}</p>
+
+<p><font size='5'>
+   All Request Parameters:
+</font><p>
+<c:forEach var='parameter' items='${renderRequest.parameterMap}'> 
+   <ul>
+      <li><b><c:out value='${parameter.key}'/></b>:</li>
+      <c:forEach var='value' items='${parameter.value}'>
+         <c:out value='${value}'/>   
+      </c:forEach>
+   </ul>
+</c:forEach>
 
 <c:if test="${not empty userDetails}">
     <ul>

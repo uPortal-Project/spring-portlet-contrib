@@ -40,6 +40,14 @@ public class ContribDispatcherPortlet extends DispatcherPortlet {
      * @see PortletRequestContextUtils#getPortletApplicationContext
      */
     public static final String PORTLET_APPLICATION_CONTEXT_ATTRIBUTE = DispatcherPortlet.class.getName() + ".CONTEXT";
+    
+
+    public ContribDispatcherPortlet() {
+        super();
+        
+        //Set in constructor so it can be overridden later if needed
+        this.setContextClass(ContribXmlPortletApplicationContext.class);
+    }
 
     /**
      * Uses {@link PortletApplicationContextUtils2#getPortletApplicationContext(PortletContext)} to see if

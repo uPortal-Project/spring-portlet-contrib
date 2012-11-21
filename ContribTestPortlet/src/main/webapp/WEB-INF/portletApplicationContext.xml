@@ -37,7 +37,7 @@
     <security:global-method-security secured-annotations="enabled" />
     
 
-    <bean class="org.jasig.portlet.spring.portlet.test.ServletPortletAwareTester">
+    <bean class="org.jasig.springframework.test.ServletPortletAwareTester">
         <constructor-arg value="portletApplicationContext" />
     </bean>
     

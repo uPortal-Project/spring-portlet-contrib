@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.jasig.portlet.spring.portlet.test;
+package org.jasig.springframework.test;
 
 import javax.portlet.PortletConfig;
 import javax.portlet.PortletContext;

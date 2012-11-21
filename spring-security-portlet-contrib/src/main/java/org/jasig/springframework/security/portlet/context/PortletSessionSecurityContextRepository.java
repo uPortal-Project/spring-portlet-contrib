@@ -29,6 +29,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextHolderStrategy;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 import org.springframework.util.Assert;
 
@@ -37,9 +38,10 @@ import org.springframework.util.Assert;
  * between requests.
  * <p>
  * The {@code PortletSession} will be queried to retrieve the {@code SecurityContext} in the <tt>loadContext</tt>
- * method (using the key {@link #SPRING_SECURITY_CONTEXT_KEY} by default). If a valid {@code SecurityContext} cannot be
- * obtained from the {@code PortletSession} for whatever reason, a fresh {@code SecurityContext} will be created
- * by calling by {@link SecurityContextHolder#createEmptyContext()} and this instance will be returned instead.
+ * method (using the key {@link HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY} by default).
+ * If a valid {@code SecurityContext} cannot be obtained from the {@code PortletSession} for whatever reason,
+ * a fresh {@code SecurityContext} will be created by calling by {@link SecurityContextHolder#createEmptyContext()}
+ * and this instance will be returned instead.
  * <p>
  * When <tt>saveContext</tt> is called, the context will be stored under the same key, provided
  * <ol>
@@ -68,17 +70,12 @@ import org.springframework.util.Assert;
  * @since 3.0
  */
 public class PortletSessionSecurityContextRepository implements PortletSecurityContextRepository {
-    /**
-     * The default key under which the security context will be stored in the session.
-     */
-    public static final String SPRING_SECURITY_CONTEXT_KEY = "SPRING_SECURITY_CONTEXT";
-
     protected final Log logger = LogFactory.getLog(this.getClass());
 
     /** SecurityContext instance used to check for equality with default (unauthenticated) content */
     private final Object contextObject = SecurityContextHolder.createEmptyContext();
     private boolean allowSessionCreation = true;
-    private String springSecurityContextKey = SPRING_SECURITY_CONTEXT_KEY;
+    private String springSecurityContextKey = HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 
     private final AuthenticationTrustResolver authenticationTrustResolver = new AuthenticationTrustResolverImpl();
     private final int sessionScope;

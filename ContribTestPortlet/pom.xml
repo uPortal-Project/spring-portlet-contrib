@@ -95,7 +95,6 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
-            <version>${spring-security.version}</version>
         </dependency>
         <dependency>
             <groupId>taglibs</groupId>
@@ -155,120 +154,6 @@
     </dependencies>
 
     <build>
-        <plugins>
-            <plugin>
-                <groupId>com.mycila.maven-license-plugin</groupId>
-                <artifactId>maven-license-plugin</artifactId>
-                <configuration>
-                    <aggregate>true</aggregate>
-                    <excludes>
-                        <exclude>target/**</exclude>
-                        <exclude>pom.xml.*</exclude>
-                        <exclude>release.properties</exclude>
-                        <exclude>LICENSE</exclude>
-                        <exclude>NOTICE</exclude>
-                        <exclude>NOTICE.template</exclude>
-                        <exclude>bin/**</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>enforce-versions</id>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                        <configuration>
-                            <rules>
-                                <requireJavaVersion>
-                                    <version>1.6</version>
-                                </requireJavaVersion>
-                            </rules>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <configuration>
-                    <attachClasses>true</attachClasses>
-                    <warName>ExampleSecurityPortlet</warName>
-                    <webXml>src/main/webapp/WEB-INF/web.xml</webXml>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>surefire-report-maven-plugin</artifactId>
-                <version>2.0-beta-1</version>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>cobertura-maven-plugin</artifactId>
-                <version>2.4</version>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>findbugs-maven-plugin</artifactId>
-                <version>2.3.1</version>
-            </plugin>
-        </plugins>
+        <finalName>${project.artifactId}</finalName>
     </build>
-    
-    <profiles>
-        <profile>
-            <id>localdev</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.portals.pluto</groupId>
-                        <artifactId>maven-pluto-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <phase>generate-resources</phase>
-                                <goals>
-                                    <goal>assemble</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-war-plugin</artifactId>
-                        <version>2.1</version>
-                        <configuration>
-                            <classifier>localdev</classifier>
-                            <warName>${project.artifactId}</warName>
-                            <webXml>${project.build.directory}/pluto-resources/web.xml</webXml>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <artifactId>maven-uportal-plugin</artifactId>
-                        <groupId>org.jasig.portal</groupId>
-                        <configuration>
-                            <contextName>${project.artifactId}</contextName>
-                            <artifactId>${project.artifactId}</artifactId>
-                            <artifactGroupId>${project.groupId}</artifactGroupId>
-                            <artifactVersion>${project.version}</artifactVersion>
-                            <artifactClassifier>localdev</artifactClassifier>
-                            <removeExistingDirectories>true</removeExistingDirectories>
-                            <extractWars>true</extractWars>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
-    
 </project>
