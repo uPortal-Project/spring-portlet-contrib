@@ -42,13 +42,21 @@
         <property name="suffix" value=".jsp"/>
         <property name="order" value="2"/>
     </bean>
-    
+
+    <!-- 
+     | Basic security config that relies on the portlet to actually provide the
+     | authentication details. Results in a 403 for any request that requires any sort of
+     | auth if there are no auth details in the session.
+     +-->    
     <security:http use-expressions="true" entry-point-ref="http403EntryPoint">
         <security:intercept-url pattern="/**" />
     </security:http>
-    
     <bean id="http403EntryPoint" class="org.springframework.security.web.authentication.Http403ForbiddenEntryPoint" />
 
+    <!-- 
+     | Setup the pre-authenticated provider as we're relying on the authentication information to be placed into
+     | the session by the portlet.
+     +-->
     <security:authentication-manager>
         <security:authentication-provider ref="preAuthenticatedAuthenticationProvider">
         </security:authentication-provider>
