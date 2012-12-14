@@ -38,10 +38,36 @@ public class PreAuthenticatedGrantedAuthoritiesPortletAuthenticationDetails exte
         return authorities;
     }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + ((authorities == null) ? 0 : authorities.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!super.equals(obj))
+            return false;
+        if (!(obj instanceof PreAuthenticatedGrantedAuthoritiesPortletAuthenticationDetails))
+            return false;
+        PreAuthenticatedGrantedAuthoritiesPortletAuthenticationDetails other = (PreAuthenticatedGrantedAuthoritiesPortletAuthenticationDetails) obj;
+        if (authorities == null) {
+            if (other.authorities != null)
+                return false;
+        }
+        else if (!authorities.equals(other.authorities))
+            return false;
+        return true;
+    }
+
+    @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(super.toString()).append("; ");
-        sb.append(authorities);
-        return sb.toString();
+        return "PreAuthenticatedGrantedAuthoritiesPortletAuthenticationDetails [authorities=" + authorities
+                + ", getGrantedAuthorities()=" + getGrantedAuthorities() + ", getRemoteAddress()=" + getRemoteAddress()
+                + ", getSessionId()=" + getSessionId() + ", getUserInfo()=" + getUserInfo() + "]";
     }
 }

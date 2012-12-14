@@ -19,6 +19,7 @@
 package org.jasig.springframework.security.portlet.authentication;
 
 import java.io.Serializable;
+import java.util.Map;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletSession;
@@ -38,6 +39,7 @@ public class PortletAuthenticationDetails implements Serializable {
 
     private final String remoteAddress;
     private final String sessionId;
+    private final Map<String, String> userInfo;
 
     //~ Constructors ===================================================================================================
 
@@ -52,87 +54,84 @@ public class PortletAuthenticationDetails implements Serializable {
 
         PortletSession session = request.getPortletSession(false);
         this.sessionId = (session != null) ? session.getId() : null;
+        
+        this.userInfo = (Map<String, String>)request.getAttribute(PortletRequest.USER_INFO);
     }
 
     //~ Methods ========================================================================================================
 
-    public boolean equals(Object obj) {
-        if (obj instanceof PortletAuthenticationDetails) {
-            PortletAuthenticationDetails rhs = (PortletAuthenticationDetails) obj;
-
-            if ((remoteAddress == null) && (rhs.getRemoteAddress() != null)) {
-                return false;
-            }
-
-            if ((remoteAddress != null) && (rhs.getRemoteAddress() == null)) {
-                return false;
-            }
-
-            if (remoteAddress != null) {
-                if (!remoteAddress.equals(rhs.getRemoteAddress())) {
-                    return false;
-                }
-            }
-
-            if ((sessionId == null) && (rhs.getSessionId() != null)) {
-                return false;
-            }
-
-            if ((sessionId != null) && (rhs.getSessionId() == null)) {
-                return false;
-            }
-
-            if (sessionId != null) {
-                if (!sessionId.equals(rhs.getSessionId())) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        return false;
-    }
-
     /**
      * Indicates the TCP/IP address the authentication request was received from.
      *
-     * @return the address
+     * @return the address, might be null if the portlet container does not support the REMOTE_ADDR request attribute
      */
     public String getRemoteAddress() {
         return remoteAddress;
     }
 
     /**
-     * Indicates the <code>HttpSession</code> id the authentication request was received from.
+     * Indicates the <code>PortletSession</code> id the authentication request was received from.
      *
      * @return the session ID
      */
     public String getSessionId() {
         return sessionId;
     }
+    
+    /**
+     * The user info map as returned for the {@link PortletRequest#USER_INFO} request attribute from
+     * the authentication request.
+     * 
+     * @return The user info map
+     */
+    public Map<String, String> getUserInfo() {
+        return userInfo;
+    }
 
+    
+    @Override
     public int hashCode() {
-        int code = 7654;
-
-        if (this.remoteAddress != null) {
-            code = code * (this.remoteAddress.hashCode() % 7);
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((remoteAddress == null) ? 0 : remoteAddress.hashCode());
+        result = prime * result + ((sessionId == null) ? 0 : sessionId.hashCode());
+        result = prime * result + ((userInfo == null) ? 0 : userInfo.hashCode());
+        return result;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof PortletAuthenticationDetails))
+            return false;
+        PortletAuthenticationDetails other = (PortletAuthenticationDetails) obj;
+        if (remoteAddress == null) {
+            if (other.remoteAddress != null)
+                return false;
         }
-
-        if (this.sessionId != null) {
-            code = code * (this.sessionId.hashCode() % 7);
+        else if (!remoteAddress.equals(other.remoteAddress))
+            return false;
+        if (sessionId == null) {
+            if (other.sessionId != null)
+                return false;
         }
-
-        return code;
+        else if (!sessionId.equals(other.sessionId))
+            return false;
+        if (userInfo == null) {
+            if (other.userInfo != null)
+                return false;
+        }
+        else if (!userInfo.equals(other.userInfo))
+            return false;
+        return true;
     }
 
+    @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(super.toString()).append(": ");
-        sb.append("RemoteIpAddress: ").append(this.getRemoteAddress()).append("; ");
-        sb.append("SessionId: ").append(this.getSessionId());
-
-        return sb.toString();
+        return "PortletAuthenticationDetails [remoteAddress=" + remoteAddress + ", sessionId=" + sessionId
+                + ", userInfo=" + userInfo + "]";
     }
-
 }

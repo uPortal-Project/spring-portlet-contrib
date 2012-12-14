@@ -56,7 +56,7 @@
                                 <!-- Configurable - will be rare to change though as it implies something other than getRemoteUser is used to determine auth -->
                                 <bean class="org.jasig.springframework.security.portlet.authentication.PortletPreAuthenticatedAuthenticationDetailsSource">
                                     <property name="mappableRolesRetriever">
-                                    	<!-- Configurable - gets list of roles to query for, default is to parse from portlet.xml -->
+                                    	<!-- Configurable - gets list of roles to check request.isUserInRole for. Default is to parse from portlet.xml -->
                                     	<bean class="org.jasig.springframework.security.portlet.authentication.PortletXmlMappableAttributesRetriever" />
                                     </property>
                                 </bean>

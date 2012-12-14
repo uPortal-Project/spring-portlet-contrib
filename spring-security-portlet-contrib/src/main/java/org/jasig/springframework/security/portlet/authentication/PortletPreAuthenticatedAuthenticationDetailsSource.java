@@ -87,17 +87,22 @@ public class PortletPreAuthenticatedAuthenticationDetailsSource implements Authe
      */
     public PreAuthenticatedGrantedAuthoritiesPortletAuthenticationDetails buildDetails(PortletRequest context) {
 
+        Collection<? extends GrantedAuthority> userGas = buildGrantedAuthorities(context);
+
+        PreAuthenticatedGrantedAuthoritiesPortletAuthenticationDetails result =
+                new PreAuthenticatedGrantedAuthoritiesPortletAuthenticationDetails(context, userGas);
+
+        return result;
+    }
+
+    protected Collection<? extends GrantedAuthority> buildGrantedAuthorities(PortletRequest context) {
         Collection<String> portletUserRoles = getUserRoles(context);
         Collection<? extends GrantedAuthority> userGas = portletUserRoles2GrantedAuthoritiesMapper.getGrantedAuthorities(portletUserRoles);
 
         if (logger.isDebugEnabled()) {
             logger.debug("Portlet roles [" + portletUserRoles + "] mapped to Granted Authorities: [" + userGas + "]");
         }
-
-        PreAuthenticatedGrantedAuthoritiesPortletAuthenticationDetails result =
-                new PreAuthenticatedGrantedAuthoritiesPortletAuthenticationDetails(context, userGas);
-
-        return result;
+        return userGas;
     }
 
     /**
