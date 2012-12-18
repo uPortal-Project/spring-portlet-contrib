@@ -245,6 +245,23 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>com.mycila.maven-license-plugin</groupId>
+                <artifactId>maven-license-plugin</artifactId>
+                <configuration>
+                    <aggregate>true</aggregate>
+                    <excludes>
+                        <exclude>**/NOTICE</exclude>
+                        <exclude>README</exclude>
+                        <exclude>LICENSE</exclude>
+                        <exclude>.gitignore</exclude>
+                        <exclude>**/src/test/resources/org/springframework/web/context/WEB-INF/**</exclude>
+                        <exclude>**/src/test/java/org/jasig/springframework/beans/**</exclude>
+                        <exclude>**/src/test/java/org/jasig/springframework/context/**</exclude>
+                        <exclude>**/src/test/java/org/jasig/springframework/web/portlet/SimplePortletApplicationContext.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
