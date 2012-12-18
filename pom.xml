@@ -274,7 +274,7 @@
             <distributionManagement>
                 <site>
                     <id>ci-local-site</id>
-                    <url>${jasig-site-ci-dist-base}/portlet-utils/${project.version}</url>
+                    <url>${jasig-site-ci-dist-base}/spring-portlet-contrib/${project.version}</url>
                 </site>
             </distributionManagement>
         </profile>
@@ -287,7 +287,7 @@
             <distributionManagement>
                 <site>
                     <id>developer.jasig</id>
-                    <url>${jasig-site-dist-base}/portlet-utils/${project.version}</url>
+                    <url>${jasig-site-dist-base}/spring-portlet-contrib/${project.version}</url>
                 </site>
             </distributionManagement>
         </profile>
