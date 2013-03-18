@@ -179,14 +179,10 @@ public class PortletAuthenticationProcessingFilter
             return false;
         }
         
-        if (authenticationValidator != null) {
-        	return !authenticationValidator.validate(currentUser, request);
-        }
-
         Object principal = getPreAuthenticatedPrincipal(request);
 
-        if (currentUser.getName().equals(principal)) {
-            return false;
+        if (!currentUser.getName().equals(principal) || (authenticationValidator != null && !authenticationValidator.validate(currentUser, request))) {
+            return true;
         }
 
         logger.debug("Pre-authenticated principal has changed to " + principal + " and will be reauthenticated");
