@@ -29,6 +29,7 @@ import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import javax.portlet.PortletSession;
 
+import org.jasig.springframework.security.portlet.util.AuthenticationValidator;
 import org.jasig.springframework.web.portlet.filter.GenericPortletFilterBean;
 import org.jasig.springframework.web.portlet.filter.PortletFilterUtils;
 import org.springframework.context.ApplicationEventPublisher;
@@ -95,6 +96,7 @@ public class PortletAuthenticationProcessingFilter
     private ApplicationEventPublisher eventPublisher = null;
     private AuthenticationDetailsSource<PortletRequest, ?> authenticationDetailsSource;
     private AuthenticationManager authenticationManager = null;
+    private AuthenticationValidator authenticationValidator =null;
     private boolean continueFilterChainOnUnsuccessfulAuthentication = true;
     private boolean checkForPrincipalChanges;
     private boolean invalidateSessionOnPrincipalChange = true;
@@ -175,6 +177,10 @@ public class PortletAuthenticationProcessingFilter
 
         if (!checkForPrincipalChanges) {
             return false;
+        }
+        
+        if (authenticationValidator != null) {
+        	return !authenticationValidator.validate(currentUser, request);
         }
 
         Object principal = getPreAuthenticatedPrincipal(request);
@@ -369,5 +375,9 @@ public class PortletAuthenticationProcessingFilter
      */
     public void setUseAuthTypeAsCredentials(boolean useAuthTypeAsCredentials) {
         this.useAuthTypeAsCredentials = useAuthTypeAsCredentials;
+    }
+    
+    public void setAuthenticationValidator(AuthenticationValidator value) {
+    	this.authenticationValidator = value;
     }
 }
