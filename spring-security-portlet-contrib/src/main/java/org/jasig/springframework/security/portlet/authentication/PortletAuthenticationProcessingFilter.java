@@ -181,20 +181,21 @@ public class PortletAuthenticationProcessingFilter
         
         Object principal = getPreAuthenticatedPrincipal(request);
 
-        if (!currentUser.getName().equals(principal) || (authenticationValidator != null && !authenticationValidator.validate(currentUser, request))) {
-            return true;
-        }
-
-        logger.debug("Pre-authenticated principal has changed to " + principal + " and will be reauthenticated");
-
-        if (invalidateSessionOnPrincipalChange) {
-            PortletSession session = request.getPortletSession(false);
-
-            if (session != null) {
-                logger.debug("Invalidating existing session");
-                session.invalidate();
-                request.getPortletSession();
-            }
+        if (currentUser.getName().equals(principal)) {
+            return (authenticationValidator != null && !authenticationValidator.validate(currentUser, request));
+        } else {
+        	
+	        logger.debug("Pre-authenticated principal has changed to " + principal + " and will be reauthenticated");
+	
+	        if (invalidateSessionOnPrincipalChange) {
+	            PortletSession session = request.getPortletSession(false);
+	
+	            if (session != null) {
+	                logger.debug("Invalidating existing session");
+	                session.invalidate();
+	                request.getPortletSession();
+	            }
+	        }
         }
 
         return true;
