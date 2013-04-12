@@ -22,6 +22,9 @@ import javax.portlet.PortletContext;
 
 import org.jasig.springframework.web.portlet.support.PortletRequestContextUtils;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.Environment;
+import org.springframework.util.Assert;
 import org.springframework.web.portlet.DispatcherPortlet;
 
 /**
@@ -67,5 +70,17 @@ public class ContribDispatcherPortlet extends DispatcherPortlet {
         return super.createPortletApplicationContext(parent);
     }
     
-    
+    @Override
+    protected ConfigurableEnvironment createEnvironment() {
+        return new ContribStandardPortletEnvironment();
+    }
+
+    @Override
+    public void setEnvironment(Environment environment) {
+        Assert.isInstanceOf(ConfigurablePortletEnvironment.class, environment,
+                "ContribDispatcherPortlet environment must be of type " +
+                "ConfigurablePortletEnvironment");
+        
+        super.setEnvironment(environment);
+    }
 }

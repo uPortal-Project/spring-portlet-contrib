@@ -54,6 +54,18 @@ public class ContribXmlPortletApplicationContext extends XmlPortletApplicationCo
                 "ConfigurablePortletEnvironment");
         return (ConfigurablePortletEnvironment) env;
     }
+    
+    /**
+     * TODO this gets moved into ConfigurablePortletApplicationContext
+     */
+    @Override
+    public void setEnvironment(ConfigurableEnvironment environment) {
+        Assert.isInstanceOf(ConfigurablePortletEnvironment.class, environment,
+                "ContribDispatcherPortlet environment must be of type " +
+                "ConfigurablePortletEnvironment");
+        
+        super.setEnvironment(environment);
+    }
 
     /**
      * {@inheritDoc}
