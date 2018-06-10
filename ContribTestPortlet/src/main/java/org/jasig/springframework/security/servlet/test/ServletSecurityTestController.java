@@ -28,23 +28,44 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+/**
+ * <p>ServletSecurityTestController class.</p>
+ */
 @Controller
 @RequestMapping("/index.html")
 public class ServletSecurityTestController {
 
+    /**
+     * <p>displayUserInfo.</p>
+     *
+     * @param model a {@link org.springframework.ui.ModelMap} object.
+     * @return a {@link java.lang.String} object.
+     */
     @RequestMapping
     public String displayUserInfo(ModelMap model) {
         model.put("handler", "default");
         return handle(model);
     }
-    
+
+    /**
+     * <p>displayUserInfoEveryone.</p>
+     *
+     * @param model a {@link org.springframework.ui.ModelMap} object.
+     * @return a {@link java.lang.String} object.
+     */
     @Secured({"ROLE_EveryoneId"})
     @RequestMapping(params = "preAuth=everyone")
     public String displayUserInfoEveryone(ModelMap model) {
         model.put("handler", "everyone");
         return handle(model);
     }
-    
+
+    /**
+     * <p>displayUserInfoAdmin.</p>
+     *
+     * @param model a {@link org.springframework.ui.ModelMap} object.
+     * @return a {@link java.lang.String} object.
+     */
     @PreAuthorize("hasRole('ROLE_PortalAdministratorsName')")
     @RequestMapping(params = "preAuth=admin")
     public String displayUserInfoAdmin(ModelMap model) {
@@ -52,12 +73,18 @@ public class ServletSecurityTestController {
         return handle(model);
     }
 
+    /**
+     * <p>handle.</p>
+     *
+     * @param model a {@link org.springframework.ui.ModelMap} object.
+     * @return a {@link java.lang.String} object.
+     */
     protected String handle(ModelMap model) {
         final SecurityContext context = SecurityContextHolder.getContext();
         final Authentication authentication = context.getAuthentication();
         if (authentication != null) {
             final Object principal = authentication.getPrincipal();
-    
+
             final String username;
             if (principal instanceof UserDetails) {
                 username = ((UserDetails) principal).getUsername();
@@ -65,7 +92,7 @@ public class ServletSecurityTestController {
             } else {
                 username = principal.toString();
             }
-    
+
             model.put("username", username);
         }
 

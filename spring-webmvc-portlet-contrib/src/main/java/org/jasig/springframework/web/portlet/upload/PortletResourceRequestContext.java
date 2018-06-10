@@ -25,29 +25,41 @@ import javax.portlet.ResourceRequest;
 
 import org.apache.commons.fileupload.RequestContext;
 
+/**
+ * <p>PortletResourceRequestContext class.</p>
+ */
 public class PortletResourceRequestContext implements RequestContext {
 
     private ResourceRequest request;
 
+    /**
+     * <p>Constructor for PortletResourceRequestContext.</p>
+     *
+     * @param request a {@link javax.portlet.ResourceRequest} object.
+     */
     public PortletResourceRequestContext(ResourceRequest request) {
         this.request = request;
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getCharacterEncoding() {
         return request.getCharacterEncoding();
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getContentType() {
         return request.getContentType();
     }
 
+    /** {@inheritDoc} */
     @Override
     public int getContentLength() {
         return request.getContentLength();
     }
 
+    /** {@inheritDoc} */
     @Override
     public InputStream getInputStream() throws IOException {
         return request.getPortletInputStream();

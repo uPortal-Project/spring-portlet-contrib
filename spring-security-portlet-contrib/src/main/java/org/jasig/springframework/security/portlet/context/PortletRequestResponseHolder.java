@@ -25,10 +25,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 
 /**
- * Used to pass the incoming request to {@link PortletSecurityContextRepository#loadContext(PortletRequestResponseHolder)}
+ * Used to pass the incoming request to {@link org.jasig.springframework.security.portlet.context.PortletSecurityContextRepository#loadContext(PortletRequestResponseHolder)}
  *
  * @author Eric Dalquist
  * @since 3.0
+ * @version $Id: $Id
  */
 public final class PortletRequestResponseHolder {
     private final PortletRequest request;
@@ -39,15 +40,31 @@ public final class PortletRequestResponseHolder {
     private Authentication authBeforeExecution;
 
 
+    /**
+     * <p>Constructor for PortletRequestResponseHolder.</p>
+     *
+     * @param request a {@link javax.portlet.PortletRequest} object.
+     * @param response a {@link javax.portlet.PortletResponse} object.
+     */
     public PortletRequestResponseHolder(PortletRequest request, PortletResponse response) {
         this.request = request;
         this.response = response;
     }
 
+    /**
+     * <p>Getter for the field <code>request</code>.</p>
+     *
+     * @return a {@link javax.portlet.PortletRequest} object.
+     */
     public PortletRequest getRequest() {
         return request;
     }
 
+    /**
+     * <p>Getter for the field <code>response</code>.</p>
+     *
+     * @return a {@link javax.portlet.PortletResponse} object.
+     */
     public PortletResponse getResponse() {
         return response;
     }

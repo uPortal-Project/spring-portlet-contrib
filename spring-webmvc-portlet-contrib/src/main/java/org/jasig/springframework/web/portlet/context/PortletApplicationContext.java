@@ -25,7 +25,7 @@ import org.springframework.web.portlet.context.ConfigurablePortletApplicationCon
 import org.springframework.web.portlet.context.PortletContextAware;
 
 
-/** 
+/**
  * Interface to provide configuration for a web application. This is read-only while
  * the application is running, but may be reloaded if the implementation supports this.
  *
@@ -38,13 +38,14 @@ import org.springframework.web.portlet.context.PortletContextAware;
  * (including a dispatcher servlet in the MVC framework) has its own child context.
  *
  * <p>In addition to standard application context lifecycle capabilities,
- * WebApplicationContext implementations need to detect {@link ServletContextAware}
+ * WebApplicationContext implementations need to detect {@link org.springframework.web.context.ServletContextAware}
  * beans and invoke the <code>setServletContext</code> method accordingly.
  *
  * @author Eric Dalquist
  * @see PortletContextAware#setPortletContext(PortletContext)
- * 
- * TODO make {@link ConfigurablePortletApplicationContext} implement this interface
+ *
+ * TODO make {@link org.springframework.web.portlet.context.ConfigurablePortletApplicationContext} implement this interface
+ * @version $Id: $Id
  */
 public interface PortletApplicationContext extends ConfigurablePortletApplicationContext {
     /**
@@ -74,6 +75,8 @@ public interface PortletApplicationContext extends ConfigurablePortletApplicatio
 
     /**
      * Return the standard Portlet API PortletContext for this application.
+     *
+     * @return a {@link javax.portlet.PortletContext} object.
      */
     PortletContext getPortletContext();
 }

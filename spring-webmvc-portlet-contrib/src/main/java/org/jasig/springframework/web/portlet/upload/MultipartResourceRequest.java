@@ -22,6 +22,9 @@ import javax.portlet.ResourceRequest;
 
 import org.springframework.web.multipart.MultipartRequest;
 
+/**
+ * <p>MultipartResourceRequest interface.</p>
+ */
 public interface MultipartResourceRequest extends MultipartRequest, ResourceRequest {
 
 }

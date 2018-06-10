@@ -28,12 +28,13 @@ import org.springframework.util.Assert;
 import org.springframework.web.portlet.DispatcherPortlet;
 
 /**
- * Extension to {@link DispatcherPortlet} that adds support for:
+ * Extension to {@link org.springframework.web.portlet.DispatcherPortlet} that adds support for:
  * <ul>
  * <li>A portlet application level spring context</li>
  * </ul>
- * 
+ *
  * @author Eric Dalquist
+ * @version $Id: $Id
  */
 public class ContribDispatcherPortlet extends DispatcherPortlet {
 
@@ -45,6 +46,9 @@ public class ContribDispatcherPortlet extends DispatcherPortlet {
     public static final String PORTLET_APPLICATION_CONTEXT_ATTRIBUTE = DispatcherPortlet.class.getName() + ".CONTEXT";
     
 
+    /**
+     * <p>Constructor for ContribDispatcherPortlet.</p>
+     */
     public ContribDispatcherPortlet() {
         super();
         
@@ -53,6 +57,8 @@ public class ContribDispatcherPortlet extends DispatcherPortlet {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Uses {@link PortletApplicationContextUtils2#getPortletApplicationContext(PortletContext)} to see if
      * the portlet application level context has been loaded. The portlet applications's context is then used
      * as the parent for the portlet's context.
@@ -70,11 +76,13 @@ public class ContribDispatcherPortlet extends DispatcherPortlet {
         return super.createPortletApplicationContext(parent);
     }
     
+    /** {@inheritDoc} */
     @Override
     protected ConfigurableEnvironment createEnvironment() {
         return new ContribStandardPortletEnvironment();
     }
 
+    /** {@inheritDoc} */
     @Override
     public void setEnvironment(Environment environment) {
         Assert.isInstanceOf(ConfigurablePortletEnvironment.class, environment,

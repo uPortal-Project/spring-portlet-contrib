@@ -29,7 +29,7 @@ import org.springframework.web.portlet.context.ConfigurablePortletApplicationCon
 
 /**
  * Convenience methods for retrieving the root
- * {@link PortletApplicationContext} for a given
+ * {@link org.jasig.springframework.web.portlet.context.PortletApplicationContext} for a given
  * <code>PortletContext</code>. This is e.g. useful for accessing a Spring
  * context from within custom web views or Struts actions.
  *
@@ -39,9 +39,9 @@ import org.springframework.web.portlet.context.ConfigurablePortletApplicationCon
  *
  * @author Juergen Hoeller
  * @author Eric Dalquist
- * @see ContextLoaderFilter
  * @see FrameworkPortlet
  * @see DispatcherPortlet
+ * @version $Id: $Id
  */
 public class PortletApplicationContextUtils2 {
     /**
@@ -50,16 +50,16 @@ public class PortletApplicationContextUtils2 {
     public static final String ROOT_PORTLET_APPLICATION_CONTEXT_LOADER_ATTRIBUTE = ConfigurablePortletApplicationContext.class.getName() + ".ROOT_LOADER";
 
     private static final Log LOGGER = LogFactory.getLog(PortletApplicationContextUtils2.class);
-    
+
     /**
      * Find the root PortletApplicationContext for this portlet application, which is
-     * typically loaded via {@link ContextLoaderFilter}.
+     * typically loaded via ContextLoaderFilter.
      * <p>Will rethrow an exception that happened on root context startup,
      * to differentiate between a failed context startup and no context at all.
+     *
      * @param pc PortletContext to find the portlet application context for
      * @return the root PortletApplicationContext for this portlet app
-     * @throws IllegalStateException if the root PortletApplicationContext could not be found
-     * @see PortletApplicationContextUtils2#ROOT_PORTLET_APPLICATION_CONTEXT_ATTRIBUTE
+     * @throws java.lang.IllegalStateException if the root PortletApplicationContext could not be found
      */
     public static PortletApplicationContext getRequiredPortletApplicationContext(PortletContext pc)
             throws IllegalStateException {
@@ -73,12 +73,12 @@ public class PortletApplicationContextUtils2 {
 
     /**
      * Find the root PortletApplicationContext for this portlet application, which is
-     * typically loaded via {@link PortletContextLoaderListener}.
+     * typically loaded via {@link org.jasig.springframework.web.portlet.context.PortletContextLoaderListener}.
      * <p>Will rethrow an exception that happened on root context startup,
      * to differentiate between a failed context startup and no context at all.
+     *
      * @param pc PortletContext to find the web application context for
      * @return the root PortletApplicationContext for this portlet app, or <code>null</code> if none
-     * @see PortletApplicationContextUtils2#ROOT_PORTLET_APPLICATION_CONTEXT_ATTRIBUTE
      */
     public static PortletApplicationContext getPortletApplicationContext(PortletContext pc) {
         //First check if the parent PortletApplicationContext has been set
@@ -86,7 +86,7 @@ public class PortletApplicationContextUtils2 {
         if (parentPortletApplicationContext != null) {
             return parentPortletApplicationContext;
         }
-    
+
         //Next look to see if a PortletContextLoader exists in the PortletContext, if not we
         //can't create the context in the next step
         final PortletContextLoader portletContextLoader = (PortletContextLoader)pc.getAttribute(PortletApplicationContextUtils2.ROOT_PORTLET_APPLICATION_CONTEXT_LOADER_ATTRIBUTE);
@@ -94,7 +94,7 @@ public class PortletApplicationContextUtils2 {
             LOGGER.info("No PortletContextLoader found, skipping load of portlet-app level context. See org.jasig.springframework.web.portlet.context.PortletContextLoaderListener for more information");
             return null;
         }
-        
+
         //Since a loader was found use it to get/create the root PortletApplicationContext in a thread-safe manner
         //The create is done in this lazy fashion as the portlet API provides nothing like a ServletContextListener that
         //can be used to create the root PortletApplicationContext before portlets/filters are initialized
@@ -104,12 +104,13 @@ public class PortletApplicationContextUtils2 {
                 parentPortletApplicationContext = portletContextLoader.initWebApplicationContext(pc);
             }
         }
-        
+
         return parentPortletApplicationContext;
     }
 
     /**
      * Find a custom PortletApplicationContext for this web application.
+     *
      * @param pc PortletContext to find the web application context for
      * @param attrName the name of the PortletContext attribute to look for
      * @return the desired PortletApplicationContext for this web app, or <code>null</code> if none

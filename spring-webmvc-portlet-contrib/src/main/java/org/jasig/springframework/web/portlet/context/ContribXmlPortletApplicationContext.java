@@ -24,18 +24,21 @@ import org.springframework.web.portlet.context.ConfigurablePortletApplicationCon
 import org.springframework.web.portlet.context.XmlPortletApplicationContext;
 
 /**
- * Exists simply to add {@link PortletApplicationContext} into the type hierarchy of
+ * Exists simply to add {@link org.jasig.springframework.web.portlet.context.PortletApplicationContext} into the type hierarchy of
  * XmlPortletApplicationContext. This class should be deleted when this functionality
- * gets added into Spring proper and {@link ConfigurablePortletApplicationContext} 
- * implements {@link PortletApplicationContext}
- * 
+ * gets added into Spring proper and {@link org.springframework.web.portlet.context.ConfigurablePortletApplicationContext}
+ * implements {@link org.jasig.springframework.web.portlet.context.PortletApplicationContext}
+ *
  * @author Eric Dalquist
+ * @version $Id: $Id
  */
 public class ContribXmlPortletApplicationContext extends XmlPortletApplicationContext implements
         PortletApplicationContext {
     
 
     /**
+     * {@inheritDoc}
+     *
      * TODO this goes away once ContribStandardPortletEnvironment gets merged into StandardPortletEnvironment
      */
     @Override
@@ -44,6 +47,8 @@ public class ContribXmlPortletApplicationContext extends XmlPortletApplicationCo
     }
 
     /**
+     * {@inheritDoc}
+     *
      * TODO this gets moved into ConfigurablePortletApplicationContext
      */
     @Override
@@ -56,6 +61,8 @@ public class ContribXmlPortletApplicationContext extends XmlPortletApplicationCo
     }
     
     /**
+     * {@inheritDoc}
+     *
      * TODO this gets moved into ConfigurablePortletApplicationContext
      */
     @Override

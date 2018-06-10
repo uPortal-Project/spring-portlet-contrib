@@ -36,6 +36,7 @@ import org.springframework.security.core.authority.GrantedAuthoritiesContainer;
  * @author Ruud Senden
  * @author Luke Taylor
  * @since 2.0
+ * @version $Id: $Id
  */
 public class PreAuthenticatedGrantedAuthoritiesPortletAuthenticationDetails extends PortletAuthenticationDetails
         implements GrantedAuthoritiesContainer {
@@ -44,6 +45,12 @@ public class PreAuthenticatedGrantedAuthoritiesPortletAuthenticationDetails exte
 
     private final List<GrantedAuthority> authorities;
 
+    /**
+     * <p>Constructor for PreAuthenticatedGrantedAuthoritiesPortletAuthenticationDetails.</p>
+     *
+     * @param request a {@link javax.portlet.PortletRequest} object.
+     * @param authorities a {@link java.util.Collection} object.
+     */
     public PreAuthenticatedGrantedAuthoritiesPortletAuthenticationDetails(PortletRequest request,
             Collection<? extends GrantedAuthority> authorities) {
         super(request);
@@ -52,10 +59,16 @@ public class PreAuthenticatedGrantedAuthoritiesPortletAuthenticationDetails exte
         this.authorities = Collections.unmodifiableList(temp);
     }
 
+    /**
+     * <p>getGrantedAuthorities.</p>
+     *
+     * @return a {@link java.util.List} object.
+     */
     public List<GrantedAuthority> getGrantedAuthorities() {
         return authorities;
     }
 
+    /** {@inheritDoc} */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -64,6 +77,7 @@ public class PreAuthenticatedGrantedAuthoritiesPortletAuthenticationDetails exte
         return result;
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -82,6 +96,7 @@ public class PreAuthenticatedGrantedAuthoritiesPortletAuthenticationDetails exte
         return true;
     }
 
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return "PreAuthenticatedGrantedAuthoritiesPortletAuthenticationDetails [authorities=" + authorities

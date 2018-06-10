@@ -26,17 +26,19 @@ import org.springframework.web.context.ContextCleanupListener;
 import org.springframework.web.context.ContextLoaderListener;
 
 /**
- * Bootstrap listener to start up and shut down Spring's root {@link PortletApplicationContext}.
- * Simply delegates to {@link PortletContextLoader} as well as to {@link ContextCleanupListener}.
- * 
+ * Bootstrap listener to start up and shut down Spring's root {@link org.jasig.springframework.web.portlet.context.PortletApplicationContext}.
+ * Simply delegates to {@link org.jasig.springframework.web.portlet.context.PortletContextLoader} as well as to {@link org.springframework.web.context.ContextCleanupListener}.
+ *
  * <p>This class is configured in the <code>web.xml</code> of the application and MUST be
- * registered after the {@link ContextLoaderListener}
+ * registered after the {@link org.springframework.web.context.ContextLoaderListener}
  *
  * @author Eric Dalquist
+ * @version $Id: $Id
  */
 public class PortletContextLoaderListener implements ServletContextListener {
     private PortletContextLoader contextLoader;
     
+    /** {@inheritDoc} */
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         final ServletContext servletContext = sce.getServletContext();
@@ -51,6 +53,7 @@ public class PortletContextLoaderListener implements ServletContextListener {
         servletContext.setAttribute(PortletApplicationContextUtils2.ROOT_PORTLET_APPLICATION_CONTEXT_LOADER_ATTRIBUTE, contextLoader);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
         //destroy the root portlet app context

@@ -29,21 +29,23 @@ import org.springframework.web.portlet.context.PortletApplicationContextUtils;
 
 /**
  * Utility class for easy access to request-specific state which has been
- * set by the {@link ContribDispatcherPortlet}.
+ * set by the {@link org.jasig.springframework.web.portlet.context.ContribDispatcherPortlet}.
  *
  * <p>Supports lookup of current PortletApplicationContext.
  *
  * @author Eric Dalquist
  * @see ContribDispatcherPortlet
+ * @version $Id: $Id
  */
 public class PortletRequestContextUtils {
 
     /**
      * Look for the PortletApplicationContext associated with the DispatcherPortlet
      * that has initiated request processing.
+     *
      * @param request current portlet request
      * @return the request-specific portlet application context
-     * @throws IllegalStateException if no portlet-specific context has been found
+     * @throws java.lang.IllegalStateException if no portlet-specific context has been found
      */
     public static PortletApplicationContext getPortletApplicationContext(PortletRequest request)
         throws IllegalStateException {
@@ -57,11 +59,12 @@ public class PortletRequestContextUtils {
      * was found associated with the current request. This method is useful to
      * allow components outside the framework, such as JSP tag handlers,
      * to access the most specific application context available.
+     *
      * @param request current portlet request
      * @param portletContext current portlet context
      * @return the request-specific PortletApplicationContext, or the global one
      * if no request-specific context has been found
-     * @throws IllegalStateException if neither a portlet-specific nor a
+     * @throws java.lang.IllegalStateException if neither a portlet-specific nor a
      * global context has been found
      */
     public static PortletApplicationContext getPortletApplicationContext(
@@ -86,11 +89,12 @@ public class PortletRequestContextUtils {
      * global portlet context was found. This method is useful to
      * allow components outside the framework, such as JSP tag handlers,
      * to access the most specific application context available.
+     *
      * @param request current portlet request
      * @param portletContext current portlet context
      * @return the request-specific PortletApplicationContext, or the global one
      * if no request-specific context has been found
-     * @throws IllegalStateException if neither a portlet-specific nor a
+     * @throws java.lang.IllegalStateException if neither a portlet-specific nor a
      * global context has been found
      */
     public static ApplicationContext getWebApplicationContext(

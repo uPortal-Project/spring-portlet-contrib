@@ -31,12 +31,13 @@ import org.springframework.mock.web.portlet.MockPortletContext;
 import org.springframework.util.Assert;
 
 /**
- * Mock implementation of the {@link FilterConfig} interface.
+ * Mock implementation of the {@link javax.portlet.filter.FilterConfig} interface.
  *
  * <p>Used for testing the web framework; also useful for testing
- * custom {@link PortletFilter} implementations.
+ * custom {@link javax.portlet.filter.PortletFilter} implementations.
  *
  * @author Eric Dalquist
+ * @version $Id: $Id
  */
 public class MockFilterConfig implements FilterConfig {
 
@@ -47,14 +48,15 @@ public class MockFilterConfig implements FilterConfig {
     private final Map<String, String> initParameters = new LinkedHashMap<String, String>();
 
     /**
-     * Create a new MockFilterConfig with a default {@link MockPortletContext}.
+     * Create a new MockFilterConfig with a default {@link org.springframework.mock.web.portlet.MockPortletContext}.
      */
     public MockFilterConfig() {
         this(null, "");
     }
 
     /**
-     * Create a new MockFilterConfig with a default {@link MockPortletContext}.
+     * Create a new MockFilterConfig with a default {@link org.springframework.mock.web.portlet.MockPortletContext}.
+     *
      * @param filterName the name of the filter
      */
     public MockFilterConfig(String filterName) {
@@ -63,6 +65,7 @@ public class MockFilterConfig implements FilterConfig {
 
     /**
      * Create a new MockFilterConfig.
+     *
      * @param portletContext the PortletContext that the portlet runs in
      */
     public MockFilterConfig(PortletContext portletContext) {
@@ -71,6 +74,7 @@ public class MockFilterConfig implements FilterConfig {
 
     /**
      * Create a new MockFilterConfig.
+     *
      * @param portletContext the PortletContext that the portlet runs in
      * @param filterName the name of the filter
      */
@@ -79,26 +83,36 @@ public class MockFilterConfig implements FilterConfig {
         this.filterName = filterName;
     }
     
+    /** {@inheritDoc} */
     @Override
     public String getFilterName() {
         return this.filterName;
     }
 
+    /** {@inheritDoc} */
     @Override
     public PortletContext getPortletContext() {
         return this.portletContext;
     }
 
+    /**
+     * <p>addInitParameter.</p>
+     *
+     * @param name a {@link java.lang.String} object.
+     * @param value a {@link java.lang.String} object.
+     */
     public void addInitParameter(String name, String value) {
         Assert.notNull(name, "Parameter name must not be null");
         this.initParameters.put(name, value);
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getInitParameter(String name) {
         return this.initParameters.get(name);
     }
 
+    /** {@inheritDoc} */
     @Override
     public Enumeration<String> getInitParameterNames() {
         return Collections.enumeration(this.initParameters.keySet());

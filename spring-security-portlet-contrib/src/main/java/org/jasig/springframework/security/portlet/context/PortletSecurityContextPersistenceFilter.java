@@ -31,6 +31,9 @@ import org.jasig.springframework.web.portlet.filter.PortletFilterUtils;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+/**
+ * <p>PortletSecurityContextPersistenceFilter class.</p>
+ */
 public class PortletSecurityContextPersistenceFilter
         extends GenericPortletFilterBean {
 
@@ -40,14 +43,23 @@ public class PortletSecurityContextPersistenceFilter
 
     private boolean forceEagerSessionCreation = false;
 
+    /**
+     * <p>Constructor for PortletSecurityContextPersistenceFilter.</p>
+     */
     public PortletSecurityContextPersistenceFilter() {
         this(new PortletSessionSecurityContextRepository());
     }
 
+    /**
+     * <p>Constructor for PortletSecurityContextPersistenceFilter.</p>
+     *
+     * @param repo a {@link org.jasig.springframework.security.portlet.context.PortletSecurityContextRepository} object.
+     */
     public PortletSecurityContextPersistenceFilter(PortletSecurityContextRepository repo) {
         this.repo = repo;
     }
-    
+
+    /** {@inheritDoc} */
     @Override
     protected void doCommonFilter(PortletRequest request, PortletResponse response, FilterChain chain)
             throws IOException, PortletException {
@@ -90,6 +102,11 @@ public class PortletSecurityContextPersistenceFilter
         }
     }
 
+    /**
+     * <p>Setter for the field <code>forceEagerSessionCreation</code>.</p>
+     *
+     * @param forceEagerSessionCreation a boolean.
+     */
     public void setForceEagerSessionCreation(boolean forceEagerSessionCreation) {
         this.forceEagerSessionCreation = forceEagerSessionCreation;
     }

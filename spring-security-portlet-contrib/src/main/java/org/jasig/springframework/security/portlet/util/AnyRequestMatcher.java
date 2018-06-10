@@ -21,22 +21,26 @@ package org.jasig.springframework.security.portlet.util;
 import javax.portlet.PortletRequest;
 
 /**
- * Matches all {@link PortletRequest}s
- * 
+ * Matches all {@link javax.portlet.PortletRequest}s
+ *
  * @author Eric Dalquist
+ * @version $Id: $Id
  */
 public class AnyRequestMatcher implements RequestMatcher {
 
+    /** {@inheritDoc} */
     @Override
     public boolean matches(PortletRequest request) {
         return true;
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean equals(Object obj) {
         return obj instanceof AnyRequestMatcher;
     }
 
+    /** {@inheritDoc} */
     @Override
     public int hashCode() {
         return 1;

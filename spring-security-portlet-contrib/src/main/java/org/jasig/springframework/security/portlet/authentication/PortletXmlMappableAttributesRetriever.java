@@ -65,6 +65,7 @@ import org.xml.sax.SAXException;
  * @author Eric Dalquist
  * @since 2.0
  * @see WebXmlMappableAttributesRetriever
+ * @version $Id: $Id
  */
 public class PortletXmlMappableAttributesRetriever  implements ResourceLoaderAware, PortletConfigAware, MappableAttributesRetriever, InitializingBean {
     protected final Log logger = LogFactory.getLog(getClass());
@@ -73,15 +74,22 @@ public class PortletXmlMappableAttributesRetriever  implements ResourceLoaderAwa
     private PortletConfig portletConfig;
     private Set<String> mappableAttributes;
 
+    /** {@inheritDoc} */
     public void setResourceLoader(ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
     }
 
+    /** {@inheritDoc} */
     @Override
 	public void setPortletConfig(PortletConfig portletConfig) {
 		this.portletConfig = portletConfig;
 	}
 
+	/**
+	 * <p>Getter for the field <code>mappableAttributes</code>.</p>
+	 *
+	 * @return a {@link java.util.Set} object.
+	 */
 	public Set<String> getMappableAttributes() {
         return mappableAttributes;
     }
@@ -89,6 +97,8 @@ public class PortletXmlMappableAttributesRetriever  implements ResourceLoaderAwa
     /**
      * Loads the portlet.xml file using the configured <tt>ResourceLoader</tt> and
      * parses the role-name elements from it, using these as the set of <tt>mappableAttributes</tt>.
+     *
+     * @throws java.lang.Exception if any.
      */
     public void afterPropertiesSet() throws Exception {
         Resource portletXml = resourceLoader.getResource("/WEB-INF/portlet.xml");

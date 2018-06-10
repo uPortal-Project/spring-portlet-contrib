@@ -24,19 +24,25 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
+ * <p>NullPortletSecurityContextRepository class.</p>
+ *
  * @author Eric Dalquist
+ * @version $Id: $Id
  */
 public class NullPortletSecurityContextRepository implements PortletSecurityContextRepository {
 
+    /** {@inheritDoc} */
     @Override
     public SecurityContext loadContext(PortletRequestResponseHolder requestResponseHolder) {
         return SecurityContextHolder.createEmptyContext();
     }
 
+    /** {@inheritDoc} */
     @Override
     public void saveContext(SecurityContext context, PortletRequestResponseHolder requestResponseHolder) {
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean containsContext(PortletRequest request) {
         return false;

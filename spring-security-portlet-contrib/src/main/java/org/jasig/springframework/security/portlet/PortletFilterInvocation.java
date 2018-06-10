@@ -35,15 +35,16 @@ import javax.portlet.filter.FilterChain;
 
 
 /**
-* Holds objects associated with a Portlet filter.<P>Guarantees the request and response are instances of
-* <code>PortletRequest</code> and <code>PortletResponse</code>, and that there are no <code>null</code>
-* objects.
-* <p>
-* Required so that security system classes can obtain access to the filter environment, as well as the request
-* and response.
-*
-* @author Eric Dalquist
-*/
+ * Holds objects associated with a Portlet filter.<P>Guarantees the request and response are instances of
+ * <code>PortletRequest</code> and <code>PortletResponse</code>, and that there are no <code>null</code>
+ * objects.
+ * <p>
+ * Required so that security system classes can obtain access to the filter environment, as well as the request
+ * and response.
+ *
+ * @author Eric Dalquist
+ * @version $Id: $Id
+ */
 public class PortletFilterInvocation {
    //~ Static fields ==================================================================================================
     static final FilterChain DUMMY_CHAIN = new FilterChain() {
@@ -73,6 +74,13 @@ public class PortletFilterInvocation {
 
    //~ Constructors ===================================================================================================
 
+   /**
+    * <p>Constructor for PortletFilterInvocation.</p>
+    *
+    * @param request a {@link javax.portlet.PortletRequest} object.
+    * @param response a {@link javax.portlet.PortletResponse} object.
+    * @param chain a {@link javax.portlet.filter.FilterChain} object.
+    */
    public PortletFilterInvocation(PortletRequest request, PortletResponse response, FilterChain chain) {
        if ((request == null) || (response == null) || (chain == null)) {
            throw new IllegalArgumentException("Cannot pass null values to constructor");
@@ -85,18 +93,38 @@ public class PortletFilterInvocation {
 
    //~ Methods ========================================================================================================
 
+   /**
+    * <p>Getter for the field <code>chain</code>.</p>
+    *
+    * @return a {@link javax.portlet.filter.FilterChain} object.
+    */
    public FilterChain getChain() {
        return chain;
    }
 
+   /**
+    * <p>Getter for the field <code>request</code>.</p>
+    *
+    * @return a {@link javax.portlet.PortletRequest} object.
+    */
    public PortletRequest getRequest() {
        return request;
    }
 
+   /**
+    * <p>Getter for the field <code>response</code>.</p>
+    *
+    * @return a {@link javax.portlet.PortletResponse} object.
+    */
    public PortletResponse getResponse() {
        return response;
    }
 
+   /**
+    * <p>toString.</p>
+    *
+    * @return a {@link java.lang.String} object.
+    */
    public String toString() {
        return "PortletFilterInvocation: URL: " + request;
    }

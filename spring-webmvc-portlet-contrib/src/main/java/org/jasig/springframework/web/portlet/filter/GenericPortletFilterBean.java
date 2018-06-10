@@ -67,8 +67,8 @@ import org.springframework.web.portlet.context.PortletContextResourceLoader;
 import org.springframework.web.portlet.context.StandardPortletEnvironment;
 
 /**
- * Simple base implementation of {@link ActionFilter}, {@link EventFilter},
- * {@link RenderFilter}, and {@link ResourceFilter} which treats its config
+ * Simple base implementation of {@link javax.portlet.filter.ActionFilter}, {@link javax.portlet.filter.EventFilter},
+ * {@link javax.portlet.filter.RenderFilter}, and {@link javax.portlet.filter.ResourceFilter} which treats its config
  * parameters (<code>init-param</code> entries within the <code>filter</code>
  * tag in <code>portlet.xml</code>) as bean properties.
  *
@@ -80,21 +80,20 @@ import org.springframework.web.portlet.context.StandardPortletEnvironment;
  *
  * <p>This filter leaves actual filtering to subclasses, which have to
  * override the <code>doFilter</code> method(s) the correspond to the portlet
- * filter interface(s) being used. 
+ * filter interface(s) being used.
  *
  * <p>This generic filter base class has no dependency on the Spring
  * {@link org.springframework.context.ApplicationContext} concept.
  * Filters usually don't load their own context but rather access service
  * beans from the Spring root application context, accessible via the
  * filter's {@link #getPortletContext() PortletContext} (see
- * {@link PortletApplicationContextUtils2}).
- *
+ * {@link org.jasig.springframework.web.portlet.context.PortletApplicationContextUtils2}).
  *
  * @author Eric Dalquist
  * @version $Revision: 23744 $
  */
 public abstract class GenericPortletFilterBean implements
-        ActionFilter, EventFilter, RenderFilter, ResourceFilter, BeanNameAware, 
+        ActionFilter, EventFilter, RenderFilter, ResourceFilter, BeanNameAware,
         EnvironmentAware, PortletContextAware, InitializingBean, DisposableBean {
 
 
@@ -111,15 +110,18 @@ public abstract class GenericPortletFilterBean implements
     private FilterConfig filterConfig;
 
     private String beanName;
-    
+
     private Environment environment = new StandardPortletEnvironment();
 
     private PortletContext portletContext;
-    
+
     /**
+     * {@inheritDoc}
+     *
      * Stores the bean name as defined in the Spring bean factory.
      * <p>Only relevant in case of initialization as bean, to have a name as
      * fallback to the filter name usually provided by a FilterConfig instance.
+     * @see org.springframework.beans.factory.BeanNameAware
      * @see org.springframework.beans.factory.BeanNameAware
      * @see #getFilterName()
      */
@@ -141,9 +143,12 @@ public abstract class GenericPortletFilterBean implements
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Stores the PortletContext that the bean factory runs in.
      * <p>Only relevant in case of initialization as bean, to have a PortletContext
      * as fallback to the context usually provided by a FilterConfig instance.
+     * @see PortletContextAware
      * @see PortletContextAware
      * @see #getPortletContext()
      */
@@ -156,8 +161,12 @@ public abstract class GenericPortletFilterBean implements
      * contain custom initialization of a subclass.
      * <p>Only relevant in case of initialization as bean, where the
      * standard <code>init(FilterConfig)</code> method won't be called.
+     *
      * @see #initFilterBean()
      * @see #init(FilterConfig)
+     * @see #initFilterBean()
+     * @see #init(FilterConfig)
+     * @throws java.lang.Exception if any.
      */
     public void afterPropertiesSet() throws Exception {
         initFilterBean();
@@ -171,12 +180,14 @@ public abstract class GenericPortletFilterBean implements
      * from the constructor of a subclass.
      * <p>This method is only relevant in case of traditional initialization
      * driven by a FilterConfig instance.
+     *
      * @param property name of the required property
      */
     protected final void addRequiredProperty(String property) {
         this.requiredProperties.add(property);
     }
-    
+
+    /** {@inheritDoc} */
     @Override
     public void init(FilterConfig filterConfig) throws PortletException {
         Assert.notNull(filterConfig, "FilterConfig must not be null");
@@ -214,8 +225,9 @@ public abstract class GenericPortletFilterBean implements
      * Initialize the BeanWrapper for this GenericPortletFilterBean,
      * possibly with custom editors.
      * <p>This default implementation is empty.
+     *
      * @param bw the BeanWrapper to initialize
-     * @throws BeansException if thrown by BeanWrapper methods
+     * @throws org.springframework.beans.BeansException if thrown by BeanWrapper methods
      * @see org.springframework.beans.BeanWrapper#registerCustomEditor
      */
     protected void initBeanWrapper(BeanWrapper bw) throws BeansException {
@@ -227,6 +239,7 @@ public abstract class GenericPortletFilterBean implements
      * Analogous to GenericPortlet's <code>getPortletConfig()</code>.
      * <p>Public to resemble the <code>getFilterConfig()</code> method
      * of the Portlet Filter version that shipped with WebLogic 6.1.
+     *
      * @return the FilterConfig instance, or <code>null</code> if none available
      * @see javax.portlet.GenericPortlet#getPortletConfig()
      */
@@ -240,7 +253,10 @@ public abstract class GenericPortletFilterBean implements
      * <p>Takes the FilterConfig's filter name by default.
      * If initialized as bean in a Spring application context,
      * it falls back to the bean name as defined in the bean factory.
+     *
      * @return the filter name, or <code>null</code> if none available
+     * @see GenericPortlet#getPortletName()
+     * @see FilterConfig#getFilterName()
      * @see GenericPortlet#getPortletName()
      * @see FilterConfig#getFilterName()
      * @see #setBeanName
@@ -255,9 +271,10 @@ public abstract class GenericPortletFilterBean implements
      * <p>Takes the FilterConfig's PortletContext by default.
      * If initialized as bean in a Spring application context,
      * it falls back to the PortletContext that the bean factory runs in.
+     *
      * @return the PortletContext instance, or <code>null</code> if none available
      * @see javax.portlet.GenericPortlet#getPortletContext()
-     * @see javax.portlet.FilterConfig#getPortletContext()
+     * @see javax.portlet.GenericPortlet#getPortletContext()
      * @see #setPortletContext
      */
     protected final PortletContext getPortletContext() {
@@ -273,14 +290,19 @@ public abstract class GenericPortletFilterBean implements
      * as well as filter bean initialization in a Spring application context.
      * Filter name and PortletContext will be available in both cases.
      * <p>This default implementation is empty.
-     * @throws PortletException if subclass initialization fails
+     *
+     * @throws javax.portlet.PortletException if subclass initialization fails
+     * @see #getFilterName()
+     * @see #getPortletContext()
      * @see #getFilterName()
      * @see #getPortletContext()
      */
     protected void initFilterBean() throws PortletException {
     }
-    
+
     /**
+     * {@inheritDoc}
+     *
      * Calls {@link #doCommonFilter(PortletRequest, PortletResponse, FilterChain)}
      */
     @Override
@@ -288,37 +310,49 @@ public abstract class GenericPortletFilterBean implements
             PortletException {
         doCommonFilter(request, response, chain);
     }
-    
+
     /**
+     * {@inheritDoc}
+     *
      * Calls {@link #doCommonFilter(PortletRequest, PortletResponse, FilterChain)}
      */
     @Override
     public void doFilter(EventRequest request, EventResponse response, FilterChain chain) throws IOException,
             PortletException {
-        doCommonFilter(request, response, chain);        
+        doCommonFilter(request, response, chain);
     }
-    
+
     /**
+     * {@inheritDoc}
+     *
      * Calls {@link #doCommonFilter(PortletRequest, PortletResponse, FilterChain)}
      */
     @Override
     public void doFilter(ResourceRequest request, ResourceResponse response, FilterChain chain) throws IOException,
             PortletException {
-        doCommonFilter(request, response, chain);        
+        doCommonFilter(request, response, chain);
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Calls {@link #doCommonFilter(PortletRequest, PortletResponse, FilterChain)}
      */
     @Override
     public void doFilter(RenderRequest request, RenderResponse response, FilterChain chain) throws IOException,
             PortletException {
-        doCommonFilter(request, response, chain);        
+        doCommonFilter(request, response, chain);
     }
 
     /**
      * Can be implemented by subclasses to provide filter handling common to all request types. Default
-     * implementation just uses {@link PortletFilterUtils#doFilter(PortletRequest, PortletResponse, FilterChain)}
+     * implementation just uses {@link org.jasig.springframework.web.portlet.filter.PortletFilterUtils#doFilter(PortletRequest, PortletResponse, FilterChain)}
+     *
+     * @param request a {@link javax.portlet.PortletRequest} object.
+     * @param response a {@link javax.portlet.PortletResponse} object.
+     * @param chain a {@link javax.portlet.filter.FilterChain} object.
+     * @throws java.io.IOException if any.
+     * @throws javax.portlet.PortletException if any.
      */
     protected void doCommonFilter(PortletRequest request, PortletResponse response, FilterChain chain) throws IOException, PortletException {
         PortletFilterUtils.doFilter(request, response, chain);

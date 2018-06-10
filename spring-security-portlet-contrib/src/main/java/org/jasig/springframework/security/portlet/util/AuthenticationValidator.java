@@ -22,8 +22,18 @@ import javax.portlet.PortletRequest;
 
 import org.springframework.security.core.Authentication;
 
+/**
+ * <p>AuthenticationValidator interface.</p>
+ */
 public interface AuthenticationValidator {
-	
+
+	/**
+	 * <p>validate.</p>
+	 *
+	 * @param currentUser a {@link org.springframework.security.core.Authentication} object.
+	 * @param request a {@link javax.portlet.PortletRequest} object.
+	 * @return a boolean.
+	 */
 	public boolean validate(Authentication currentUser, PortletRequest request);
 
 }

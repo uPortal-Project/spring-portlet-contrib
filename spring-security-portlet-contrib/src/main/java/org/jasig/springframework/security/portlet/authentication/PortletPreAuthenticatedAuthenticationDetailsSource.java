@@ -37,13 +37,14 @@ import org.springframework.util.Assert;
 
 /**
  * Implementation of AuthenticationDetailsSource which converts the user's Portlet roles (as obtained by calling
- * {@link PortletRequest#isUserInRole(String)}) into {@code GrantedAuthority}s and stores these in the authentication
+ * {@link javax.portlet.PortletRequest#isUserInRole(String)}) into {@code GrantedAuthority}s and stores these in the authentication
  * details object.
  *
  * @author Ruud Senden
  * @author Eric Dalquist
  * @since 2.0
  * @see J2eeBasedPreAuthenticatedWebAuthenticationDetailsSource
+ * @version $Id: $Id
  */
 public class PortletPreAuthenticatedAuthenticationDetailsSource implements AuthenticationDetailsSource<PortletRequest, PreAuthenticatedGrantedAuthoritiesPortletAuthenticationDetails> {
     protected final Log logger = LogFactory.getLog(getClass());
@@ -54,6 +55,8 @@ public class PortletPreAuthenticatedAuthenticationDetailsSource implements Authe
 
     /**
      * Check that all required properties have been set.
+     *
+     * @throws java.lang.Exception if any.
      */
     public void afterPropertiesSet() throws Exception {
         Assert.notNull(portletMappableRoles, "No mappable roles available");
@@ -62,7 +65,7 @@ public class PortletPreAuthenticatedAuthenticationDetailsSource implements Authe
 
     /**
      * Obtains the list of user roles based on the current user's Portlet roles. The
-     * {@link PortletRequest#isUserInRole(String)} method is called for each of the values
+     * {@link javax.portlet.PortletRequest#isUserInRole(String)} method is called for each of the values
      * in the {@code portletMappableRoles} set to determine if that role should be assigned to the user.
      *
      * @param request the request which should be used to extract the user's roles.
@@ -84,6 +87,8 @@ public class PortletPreAuthenticatedAuthenticationDetailsSource implements Authe
      * Builds the authentication details object.
      *
      * @see org.springframework.security.authentication.AuthenticationDetailsSource#buildDetails(Object)
+     * @param context a {@link javax.portlet.PortletRequest} object.
+     * @return a {@link org.jasig.springframework.security.portlet.authentication.PreAuthenticatedGrantedAuthoritiesPortletAuthenticationDetails} object.
      */
     public PreAuthenticatedGrantedAuthoritiesPortletAuthenticationDetails buildDetails(PortletRequest context) {
 
@@ -95,6 +100,12 @@ public class PortletPreAuthenticatedAuthenticationDetailsSource implements Authe
         return result;
     }
 
+    /**
+     * <p>buildGrantedAuthorities.</p>
+     *
+     * @param context a {@link javax.portlet.PortletRequest} object.
+     * @return a {@link java.util.Collection} object.
+     */
     protected Collection<? extends GrantedAuthority> buildGrantedAuthorities(PortletRequest context) {
         Collection<String> portletUserRoles = getUserRoles(context);
         Collection<? extends GrantedAuthority> userGas = portletUserRoles2GrantedAuthoritiesMapper.getGrantedAuthorities(portletUserRoles);
@@ -106,6 +117,8 @@ public class PortletPreAuthenticatedAuthenticationDetailsSource implements Authe
     }
 
     /**
+     * <p>setMappableRolesRetriever.</p>
+     *
      * @param portletMappableRolesRetriever
      *            The MappableAttributesRetriever to use
      */
@@ -114,6 +127,8 @@ public class PortletPreAuthenticatedAuthenticationDetailsSource implements Authe
     }
 
     /**
+     * <p>setUserRoles2GrantedAuthoritiesMapper.</p>
+     *
      * @param mapper
      *            The Attributes2GrantedAuthoritiesMapper to use
      */

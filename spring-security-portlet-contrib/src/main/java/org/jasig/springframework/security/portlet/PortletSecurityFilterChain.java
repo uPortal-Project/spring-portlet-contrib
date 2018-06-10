@@ -29,12 +29,23 @@ import javax.portlet.filter.PortletFilter;
  * <p>
  * Used to configure a {@code PortletFilterChainProxy}.
  *
- *
  * @author Eric Dalquist
+ * @version $Id: $Id
  */
 public interface PortletSecurityFilterChain {
 
+    /**
+     * <p>matches.</p>
+     *
+     * @param request a {@link javax.portlet.PortletRequest} object.
+     * @return a boolean.
+     */
     boolean matches(PortletRequest request);
 
+    /**
+     * <p>getFilters.</p>
+     *
+     * @return a {@link java.util.List} object.
+     */
     List<PortletFilter> getFilters();
 }

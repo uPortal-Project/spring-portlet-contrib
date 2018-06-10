@@ -34,26 +34,26 @@ import org.springframework.web.portlet.DispatcherPortlet;
 import org.springframework.web.portlet.multipart.CommonsPortletMultipartResolver;
 
 /**
- * Since {@link DispatcherPortlet} does not permit multipart request resolving in a resource request phase and tinkering
- * {@link DispatcherPortlet} is a fragile task, typical usage of this resolver should look like this:
- * 
+ * Since {@link org.springframework.web.portlet.DispatcherPortlet} does not permit multipart request resolving in a resource request phase and tinkering
+ * {@link org.springframework.web.portlet.DispatcherPortlet} is a fragile task, typical usage of this resolver should look like this:
+ *
  * <ol>
  * <li>Define it in web application context:
- * 
+ *
  * <pre>
  *   &lt;bean id=&quot;portletMultipartResolver&quot; class=&quot;org.springframework.web.multipart.commons.CommonsPortlet2MultipartResolver&quot;&gt;
  *     &lt;property name=&quot;maxUploadSize&quot; value=&quot;5242880&quot;/&gt;
  *   &lt;/bean&gt;</pre>
  * </li>
  * <li>Autowire multipart resolver instance in a portlet controller:
- * 
+ *
  * <pre>
- * {@literal @}Autowired 
+ * {@literal @}Autowired
  * private CommonsPortlet2MultipartResolver multipartResolver;
  * </pre>
  * </li>
  * <li>Use it:
- * 
+ *
  * <pre>
  * if (this.multipartResolver.isMultipart(request)) {
  *    MultipartRequest multipartRequest = (MultipartRequest) this.multipartResolver.resolveMultipart(request);
@@ -62,22 +62,37 @@ import org.springframework.web.portlet.multipart.CommonsPortletMultipartResolver
  * </pre>
  * </li>
  * </ol>
- * 
+ *
  * @author Arvīds Grabovskis
+ * @version $Id: $Id
  */
 public class CommonsPortlet2MultipartResolver extends CommonsPortletMultipartResolver {
 
     private boolean resolveLazily = false;
 
+    /** {@inheritDoc} */
     @Override
     public void setResolveLazily(boolean resolveLazily) {
         this.resolveLazily = resolveLazily;
     }
 
+    /**
+     * <p>isMultipart.</p>
+     *
+     * @param request a {@link javax.portlet.ResourceRequest} object.
+     * @return a boolean.
+     */
     public boolean isMultipart(ResourceRequest request) {
         return (request != null && Portlet2FileUpload.isMultipartContent(request));
     }
 
+    /**
+     * <p>resolveMultipart.</p>
+     *
+     * @param request a {@link javax.portlet.ResourceRequest} object.
+     * @return a {@link org.jasig.springframework.web.portlet.upload.MultipartResourceRequest} object.
+     * @throws org.springframework.web.multipart.MultipartException if any.
+     */
     public MultipartResourceRequest resolveMultipart(final ResourceRequest request) throws MultipartException {
         Assert.notNull(request, "Request must not be null");
         if (this.resolveLazily) {
@@ -97,6 +112,13 @@ public class CommonsPortlet2MultipartResolver extends CommonsPortletMultipartRes
         }
     }
 
+    /**
+     * <p>parseRequest.</p>
+     *
+     * @param request a {@link javax.portlet.ResourceRequest} object.
+     * @return a MultipartParsingResult object.
+     * @throws org.springframework.web.multipart.MultipartException if any.
+     */
     protected MultipartParsingResult parseRequest(ResourceRequest request) throws MultipartException {
         String encoding = determineEncoding(request);
         FileUpload fileUpload = prepareFileUpload(encoding);
@@ -111,6 +133,12 @@ public class CommonsPortlet2MultipartResolver extends CommonsPortletMultipartRes
         }
     }
 
+    /**
+     * <p>determineEncoding.</p>
+     *
+     * @param request a {@link javax.portlet.ResourceRequest} object.
+     * @return a {@link java.lang.String} object.
+     */
     protected String determineEncoding(ResourceRequest request) {
         String encoding = request.getCharacterEncoding();
         if (encoding == null) {
@@ -119,6 +147,11 @@ public class CommonsPortlet2MultipartResolver extends CommonsPortletMultipartRes
         return encoding;
     }
 
+    /**
+     * <p>cleanupMultipart.</p>
+     *
+     * @param request a {@link org.jasig.springframework.web.portlet.upload.MultipartResourceRequest} object.
+     */
     public void cleanupMultipart(MultipartResourceRequest request) {
         if (request != null) {
             try {
@@ -129,6 +162,7 @@ public class CommonsPortlet2MultipartResolver extends CommonsPortletMultipartRes
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     protected FileUpload newFileUpload(FileItemFactory fileItemFactory) {
         return new Portlet2FileUpload(fileItemFactory);

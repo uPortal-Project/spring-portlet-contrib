@@ -46,30 +46,27 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 import org.springframework.util.Assert;
 
 /**
- * Based on {@link AbstractPreAuthenticatedProcessingFilter} and the PortletProcessingInterceptor from
- * Spring Security 2.0. The {@link Authentication} implementation used is {@link PreAuthenticatedAuthenticationToken}
+ * Based on {@link org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter} and the PortletProcessingInterceptor from
+ * Spring Security 2.0. The {@link org.springframework.security.core.Authentication} implementation used is {@link org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken}
  * as all portlet requests are pre-authenticated by the container.
- * 
+ *
  * <p>This filter is responsible for processing portlet authentication requests.  This
- * is the portlet equivalent of the <code>AbstractPreAuthenticatedProcessingFilter</code> used for
+ * is the portlet equivalent of the AbstractPreAuthenticatedProcessingFilter used for
  * traditional servlet-based web applications. It is applied to all portlet lifecycle requests.
- * If authentication is successful, the resulting {@link Authentication} object will be placed
- * into the <code>SecurityContext</code>, which is guaranteed to have already been created by an
+ * If authentication is successful, the resulting {@link org.springframework.security.core.Authentication} object will be placed
+ * into the SecurityContext, which is guaranteed to have already been created by an
  * earlier filter.
  *
  *  <p>Some portals do not properly provide the identity of the current user via the
- * <code>getRemoteUser()</code> or <code>getUserPrincipal()</code> methods of the
- * <code>PortletRequest</code>.  In these cases they sometimes make it available in the
- * <code>USER_INFO</code> map provided as one of the attributes of the request.  If this is
- * the case in your portal, you can specify a list of <code>USER_INFO</code> attributes
- * to check for the username via the <code>userNameAttributes</code> property of this bean.
- * You can also completely override the {@link #getPrincipalFromRequest(PortletRequest)}
- * and {@link #getCredentialsFromRequest(PortletRequest)} methods to suit the particular
- * behavior of your portal.</p>
+ * getRemoteUser() or getUserPrincipal() methods of the
+ * PortletRequest.  In these cases they sometimes make it available in the
+ * USER_INFO map provided as one of the attributes of the request.  If this is
+ * the case in your portal, you can specify a list of USER_INFO attributes
+ * to check for the username via the userNameAttributes property of this bean.</p>
  *
- * <p>This filter will put the <code>PortletRequest</code> object into the
- * <code>details<code> property of the <code>Authentication</code> object that is sent
- * as a request to the <code>AuthenticationManager</code>.
+ * <p>This filter will put the PortletRequest object into the
+ * details property of the Authentication object that is sent
+ * as a request to the AuthenticationManager.
  * <p>
  * The purpose is then only to extract the necessary information on the principal from the incoming request, rather
  * than to authenticate them.
@@ -88,6 +85,7 @@ import org.springframework.util.Assert;
  *
  * @author Eric Dalquist
  * @since 2.0
+ * @version $Id: $Id
  */
 public class PortletAuthenticationProcessingFilter
         extends GenericPortletFilterBean
@@ -100,22 +98,26 @@ public class PortletAuthenticationProcessingFilter
     private boolean continueFilterChainOnUnsuccessfulAuthentication = true;
     private boolean checkForPrincipalChanges;
     private boolean invalidateSessionOnPrincipalChange = true;
-    
+
     private List<String> userNameAttributes;
     private boolean useAuthTypeAsCredentials = false;
 
     /**
-    * Check whether all required properties have been set.
-    */
+     * {@inheritDoc}
+     *
+     * Check whether all required properties have been set.
+     */
     @Override
     public void afterPropertiesSet() {
         Assert.notNull(authenticationManager, "An AuthenticationManager must be set");
         Assert.notNull(authenticationDetailsSource, "An AuthenticationDetailsSource must be set");
     }
-    
+
     /**
-    * Try to authenticate a pre-authenticated user with Spring Security if the user has not yet been authenticated.
-    */
+     * {@inheritDoc}
+     *
+     * Try to authenticate a pre-authenticated user with Spring Security if the user has not yet been authenticated.
+     */
     @Override
     protected void doCommonFilter(PortletRequest request, PortletResponse response,
             javax.portlet.filter.FilterChain chain) throws IOException, PortletException {
@@ -178,18 +180,18 @@ public class PortletAuthenticationProcessingFilter
         if (!checkForPrincipalChanges) {
             return false;
         }
-        
+
         Object principal = getPreAuthenticatedPrincipal(request);
 
         if (currentUser.getName().equals(principal)) {
             return (authenticationValidator != null && !authenticationValidator.validate(currentUser, request));
         } else {
-        	
+
 	        logger.debug("Pre-authenticated principal has changed to " + principal + " and will be reauthenticated");
-	
+
 	        if (invalidateSessionOnPrincipalChange) {
 	            PortletSession session = request.getPortletSession(false);
-	
+
 	            if (session != null) {
 	                logger.debug("Invalidating existing session");
 	                session.invalidate();
@@ -202,9 +204,13 @@ public class PortletAuthenticationProcessingFilter
     }
 
     /**
-    * Puts the <code>Authentication</code> instance returned by the
-    * authentication manager into the secure context.
-    */
+     * Puts the Authentication instance returned by the
+     * authentication manager into the secure context.
+     *
+     * @param request a {@link javax.portlet.PortletRequest} object.
+     * @param response a {@link javax.portlet.PortletResponse} object.
+     * @param authResult a {@link org.springframework.security.core.Authentication} object.
+     */
     protected void successfulAuthentication(PortletRequest request, PortletResponse response,
             Authentication authResult) {
         if (logger.isDebugEnabled()) {
@@ -218,10 +224,14 @@ public class PortletAuthenticationProcessingFilter
     }
 
     /**
-    * Ensures the authentication object in the secure context is set to null when authentication fails.
-    * <p>
-    * Caches the failure exception as a request attribute
-    */
+     * Ensures the authentication object in the secure context is set to null when authentication fails.
+     * <p>
+     * Caches the failure exception as a request attribute
+     *
+     * @param request a {@link javax.portlet.PortletRequest} object.
+     * @param response a {@link javax.portlet.PortletResponse} object.
+     * @param failed a {@link org.springframework.security.core.AuthenticationException} object.
+     */
     protected void unsuccessfulAuthentication(PortletRequest request, PortletResponse response,
             AuthenticationException failed) {
         SecurityContextHolder.clearContext();
@@ -232,75 +242,84 @@ public class PortletAuthenticationProcessingFilter
         request.setAttribute(WebAttributes.AUTHENTICATION_EXCEPTION, failed);
     }
 
-    /**
-    * @param anApplicationEventPublisher
-    *            The ApplicationEventPublisher to use
-    */
+    /** {@inheritDoc} */
     public void setApplicationEventPublisher(ApplicationEventPublisher anApplicationEventPublisher) {
         this.eventPublisher = anApplicationEventPublisher;
     }
 
     /**
-    * @param authenticationDetailsSource
-    *            The AuthenticationDetailsSource to use
-    */
+     * <p>Setter for the field authenticationDetailsSource.</p>
+     *
+     * @param authenticationDetailsSource
+     *            The AuthenticationDetailsSource to use
+     */
     public void setAuthenticationDetailsSource(
             AuthenticationDetailsSource<PortletRequest, ?> authenticationDetailsSource) {
         Assert.notNull(authenticationDetailsSource, "AuthenticationDetailsSource required");
         this.authenticationDetailsSource = authenticationDetailsSource;
     }
 
+    /**
+     * <p>Getter for the field authenticationDetailsSource.</p>
+     *
+     * @return a {@link org.springframework.security.authentication.AuthenticationDetailsSource} object.
+     */
     protected AuthenticationDetailsSource<PortletRequest, ?> getAuthenticationDetailsSource() {
         return authenticationDetailsSource;
     }
 
     /**
-    * @param authenticationManager
-    *            The AuthenticationManager to use
-    */
+     * <p>Setter for the field authenticationManager.</p>
+     *
+     * @param authenticationManager
+     *            The AuthenticationManager to use
+     */
     public void setAuthenticationManager(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
     }
 
     /**
-    * If set to {@code true}, any {@code AuthenticationException} raised by the {@code AuthenticationManager} will be
-    * swallowed, and the request will be allowed to proceed, potentially using alternative authentication mechanisms.
-    * If {@code false} (the default), authentication failure will result in an immediate exception.
-    *
-    * @param shouldContinue set to {@code true} to allow the request to proceed after a failed authentication.
-    */
+     * If set to {@code true}, any {@code AuthenticationException} raised by the {@code AuthenticationManager} will be
+     * swallowed, and the request will be allowed to proceed, potentially using alternative authentication mechanisms.
+     * If {@code false} (the default), authentication failure will result in an immediate exception.
+     *
+     * @param shouldContinue set to {@code true} to allow the request to proceed after a failed authentication.
+     */
     public void setContinueFilterChainOnUnsuccessfulAuthentication(boolean shouldContinue) {
         continueFilterChainOnUnsuccessfulAuthentication = shouldContinue;
     }
 
     /**
-    * If set, the pre-authenticated principal will be checked on each request and compared
-    * against the name of the current <tt>Authentication</tt> object. If a change is detected,
-    * the user will be reauthenticated.
-    *
-    * @param checkForPrincipalChanges
-    */
+     * If set, the pre-authenticated principal will be checked on each request and compared
+     * against the name of the current <tt>Authentication</tt> object. If a change is detected,
+     * the user will be reauthenticated.
+     *
+     * @param checkForPrincipalChanges a boolean.
+     */
     public void setCheckForPrincipalChanges(boolean checkForPrincipalChanges) {
         this.checkForPrincipalChanges = checkForPrincipalChanges;
     }
 
     /**
-    * If <tt>checkForPrincipalChanges</tt> is set, and a change of principal is detected, determines whether
-    * any existing session should be invalidated before proceeding to authenticate the new principal.
-    *
-    * @param invalidateSessionOnPrincipalChange <tt>false</tt> to retain the existing session. Defaults to <tt>true</tt>.
-    */
+     * If <tt>checkForPrincipalChanges</tt> is set, and a change of principal is detected, determines whether
+     * any existing session should be invalidated before proceeding to authenticate the new principal.
+     *
+     * @param invalidateSessionOnPrincipalChange <tt>false</tt> to retain the existing session. Defaults to <tt>true</tt>.
+     */
     public void setInvalidateSessionOnPrincipalChange(boolean invalidateSessionOnPrincipalChange) {
         this.invalidateSessionOnPrincipalChange = invalidateSessionOnPrincipalChange;
     }
 
     /**
      * Extracts the principal information by checking the following in order:
-     * {@link PortletRequest#getRemoteUser()}
-     * {@link PortletRequest#getUserPrincipal()}
-     * {@link PortletRequest#USER_INFO}
-     * 
-     * Returns null if no principal is found  
+     * {@link javax.portlet.PortletRequest#getRemoteUser()}
+     * {@link javax.portlet.PortletRequest#getUserPrincipal()}
+     * {@link javax.portlet.PortletRequest#USER_INFO}
+     *
+     * Returns null if no principal is found
+     *
+     * @param request a {@link javax.portlet.PortletRequest} object.
+     * @return a {@link java.lang.Object} object.
      */
     @SuppressWarnings("unchecked")
     protected Object getPreAuthenticatedPrincipal(PortletRequest request) {
@@ -344,21 +363,26 @@ public class PortletAuthenticationProcessingFilter
     }
 
     /**
-     * If {@link #setUseAuthTypeAsCredentials(boolean)} is true then {@link PortletRequest#getAuthType()} is used
+     * If {@link #setUseAuthTypeAsCredentials(boolean)} is true then {@link javax.portlet.PortletRequest#getAuthType()} is used
      * otherwise a dummy value is returned.
+     *
+     * @param request a {@link javax.portlet.PortletRequest} object.
+     * @return a {@link java.lang.Object} object.
      */
     protected Object getPreAuthenticatedCredentials(PortletRequest request) {
         if (useAuthTypeAsCredentials) {
             return request.getAuthType();
         }
-        
+
         return "N/A";
     }
 
     /**
-     * The user attributes from the {@link PortletRequest#USER_INFO} map to try and use as the userName for
-     * portals that don't support the {@link PortletRequest#getRemoteUser()} or {@link PortletRequest#getUserPrincipal()}
+     * The user attributes from the {@link javax.portlet.PortletRequest#USER_INFO} map to try and use as the userName for
+     * portals that don't support the {@link javax.portlet.PortletRequest#getRemoteUser()} or {@link javax.portlet.PortletRequest#getUserPrincipal()}
      * methods.
+     *
+     * @param userNameAttributes a {@link java.util.List} object.
      */
     public void setUserNameAttributes(List<String> userNameAttributes) {
         this.userNameAttributes = userNameAttributes;
@@ -367,13 +391,18 @@ public class PortletAuthenticationProcessingFilter
     /**
      * It true, the "authType" proerty of the <tt>PortletRequest</tt> will be used as the credentials.
      * Defaults to false.
-     * 
-     * @param useAuthTypeAsCredentials
+     *
+     * @param useAuthTypeAsCredentials a boolean.
      */
     public void setUseAuthTypeAsCredentials(boolean useAuthTypeAsCredentials) {
         this.useAuthTypeAsCredentials = useAuthTypeAsCredentials;
     }
-    
+
+    /**
+     * <p>Setter for the field authenticationValidator.</p>
+     *
+     * @param value a {@link org.jasig.springframework.security.portlet.util.AuthenticationValidator} object.
+     */
     public void setAuthenticationValidator(AuthenticationValidator value) {
     	this.authenticationValidator = value;
     }

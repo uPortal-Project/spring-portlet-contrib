@@ -27,21 +27,45 @@ import org.apache.commons.fileupload.FileUploadBase;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.portlet.PortletFileUpload;
 
+/**
+ * <p>Portlet2FileUpload class.</p>
+ */
 public class Portlet2FileUpload extends PortletFileUpload {
 
+    /**
+     * <p>Constructor for Portlet2FileUpload.</p>
+     */
     public Portlet2FileUpload() {
         super();
     }
 
+    /**
+     * <p>Constructor for Portlet2FileUpload.</p>
+     *
+     * @param fileItemFactory a {@link org.apache.commons.fileupload.FileItemFactory} object.
+     */
     public Portlet2FileUpload(FileItemFactory fileItemFactory) {
         super(fileItemFactory);
     }
 
+    /**
+     * <p>parseRequest.</p>
+     *
+     * @param request a {@link javax.portlet.ResourceRequest} object.
+     * @return a {@link java.util.List} object.
+     * @throws org.apache.commons.fileupload.FileUploadException if any.
+     */
     @SuppressWarnings("rawtypes")
     public List parseRequest(ResourceRequest request) throws FileUploadException {
         return parseRequest(new PortletResourceRequestContext(request));
     }
 
+    /**
+     * <p>isMultipartContent.</p>
+     *
+     * @param request a {@link javax.portlet.ResourceRequest} object.
+     * @return a boolean.
+     */
     public static final boolean isMultipartContent(ResourceRequest request) {
         return FileUploadBase.isMultipartContent(new PortletResourceRequestContext(request));
     }

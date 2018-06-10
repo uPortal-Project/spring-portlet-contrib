@@ -26,13 +26,15 @@ import org.springframework.web.portlet.context.PortletApplicationContextUtils;
 import org.springframework.web.portlet.context.StandardPortletEnvironment;
 
 /**
- * Adds support for {@link ConfigurablePortletEnvironment} to initialize the portlet property sources
- * 
+ * Adds support for {@link org.jasig.springframework.web.portlet.context.ConfigurablePortletEnvironment} to initialize the portlet property sources
+ *
  * @author Eric Dalquist
+ * @version $Id: $Id
  */
 public class ContribStandardPortletEnvironment extends StandardPortletEnvironment implements
         ConfigurablePortletEnvironment {
 
+    /** {@inheritDoc} */
     @Override
     public void initPropertySources(ServletContext servletContext, PortletContext portletContext, PortletConfig portletConfig) {
         PortletApplicationContextUtils.initPortletPropertySources(this.getPropertySources(), servletContext, portletContext, portletConfig);

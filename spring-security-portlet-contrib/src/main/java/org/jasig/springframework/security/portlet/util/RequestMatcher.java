@@ -24,6 +24,7 @@ import javax.portlet.PortletRequest;
  * Simple strategy to match an <tt>PortletRequest</tt>.
  *
  * @author Eric Dalquist
+ * @version $Id: $Id
  */
 public interface RequestMatcher {
 

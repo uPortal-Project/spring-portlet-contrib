@@ -33,6 +33,9 @@ import javax.portlet.filter.ResourceRequestWrapper;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * <p>DefaultMultipartResourceRequest class.</p>
+ */
 public class DefaultMultipartResourceRequest extends ResourceRequestWrapper implements MultipartResourceRequest {
 
     private MultiValueMap<String, MultipartFile> multipartFiles;
@@ -41,10 +44,23 @@ public class DefaultMultipartResourceRequest extends ResourceRequestWrapper impl
 
     private Map<String, String> multipartParameterContentTypes;
 
+    /**
+     * <p>Constructor for DefaultMultipartResourceRequest.</p>
+     *
+     * @param request a {@link javax.portlet.ResourceRequest} object.
+     */
     public DefaultMultipartResourceRequest(ResourceRequest request) {
         super(request);
     }
 
+    /**
+     * <p>Constructor for DefaultMultipartResourceRequest.</p>
+     *
+     * @param request a {@link javax.portlet.ResourceRequest} object.
+     * @param mpFiles a {@link org.springframework.util.MultiValueMap} object.
+     * @param mpParams a {@link java.util.Map} object.
+     * @param mpParamContentTypes a {@link java.util.Map} object.
+     */
     public DefaultMultipartResourceRequest(ResourceRequest request, MultiValueMap<String, MultipartFile> mpFiles,
             Map<String, String[]> mpParams, Map<String, String> mpParamContentTypes) {
         super(request);
@@ -53,36 +69,64 @@ public class DefaultMultipartResourceRequest extends ResourceRequestWrapper impl
         setMultipartParameterContentTypes(mpParamContentTypes);
     }
 
+    /**
+     * <p>Setter for the field <code>multipartFiles</code>.</p>
+     *
+     * @param multipartFiles a {@link org.springframework.util.MultiValueMap} object.
+     */
     protected void setMultipartFiles(MultiValueMap<String, MultipartFile> multipartFiles) {
         this.multipartFiles = multipartFiles;
     }
 
+    /**
+     * <p>Setter for the field <code>multipartParameterContentTypes</code>.</p>
+     *
+     * @param multipartParameterContentTypes a {@link java.util.Map} object.
+     */
     protected void setMultipartParameterContentTypes(Map<String, String> multipartParameterContentTypes) {
         this.multipartParameterContentTypes = multipartParameterContentTypes;
     }
 
+    /**
+     * <p>Setter for the field <code>multipartParameters</code>.</p>
+     *
+     * @param multipartParameters a {@link java.util.Map} object.
+     */
     protected void setMultipartParameters(Map<String, String[]> multipartParameters) {
         this.multipartParameters = multipartParameters;
     }
 
+    /**
+     * <p>Getter for the field <code>multipartFiles</code>.</p>
+     *
+     * @return a {@link org.springframework.util.MultiValueMap} object.
+     */
     protected MultiValueMap<String, MultipartFile> getMultipartFiles() {
         return multipartFiles;
     }
 
+    /**
+     * <p>Getter for the field <code>multipartParameters</code>.</p>
+     *
+     * @return a {@link java.util.Map} object.
+     */
     protected Map<String, String[]> getMultipartParameters() {
         return multipartParameters;
     }
 
+    /** {@inheritDoc} */
     @Override
     public Iterator<String> getFileNames() {
         return getMultipartFiles().keySet().iterator();
     }
 
+    /** {@inheritDoc} */
     @Override
     public MultipartFile getFile(String name) {
         return getMultipartFiles().getFirst(name);
     }
 
+    /** {@inheritDoc} */
     @Override
     public List<MultipartFile> getFiles(String name) {
         List<MultipartFile> multipartFiles = getMultipartFiles().get(name);
@@ -93,16 +137,19 @@ public class DefaultMultipartResourceRequest extends ResourceRequestWrapper impl
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public Map<String, MultipartFile> getFileMap() {
         return getMultipartFiles().toSingleValueMap();
     }
 
+    /** {@inheritDoc} */
     @Override
     public MultiValueMap<String, MultipartFile> getMultiFileMap() {
         return getMultipartFiles();
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getMultipartContentType(String paramOrFileName) {
         MultipartFile file = getFile(paramOrFileName);
@@ -113,6 +160,11 @@ public class DefaultMultipartResourceRequest extends ResourceRequestWrapper impl
         }
     }
 
+    /**
+     * <p>Getter for the field <code>multipartParameterContentTypes</code>.</p>
+     *
+     * @return a {@link java.util.Map} object.
+     */
     protected Map<String, String> getMultipartParameterContentTypes() {
         if (this.multipartParameterContentTypes == null) {
             initializeMultipart();
@@ -120,10 +172,14 @@ public class DefaultMultipartResourceRequest extends ResourceRequestWrapper impl
         return this.multipartParameterContentTypes;
     }
 
+    /**
+     * <p>initializeMultipart.</p>
+     */
     protected void initializeMultipart() {
         throw new IllegalStateException("Multipart request not initialized");
     }
 
+    /** {@inheritDoc} */
     @Override
     public Enumeration<String> getParameterNames() {
         Set<String> paramNames = new HashSet<String>();
@@ -135,6 +191,7 @@ public class DefaultMultipartResourceRequest extends ResourceRequestWrapper impl
         return Collections.enumeration(paramNames);
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getParameter(String name) {
         String[] values = getMultipartParameters().get(name);
@@ -144,6 +201,7 @@ public class DefaultMultipartResourceRequest extends ResourceRequestWrapper impl
         return super.getParameter(name);
     }
 
+    /** {@inheritDoc} */
     @Override
     public String[] getParameterValues(String name) {
         String[] values = getMultipartParameters().get(name);
@@ -153,6 +211,7 @@ public class DefaultMultipartResourceRequest extends ResourceRequestWrapper impl
         return super.getParameterValues(name);
     }
 
+    /** {@inheritDoc} */
     @Override
     public Map<String, String[]> getParameterMap() {
         Map<String, String[]> paramMap = new HashMap<String, String[]>();

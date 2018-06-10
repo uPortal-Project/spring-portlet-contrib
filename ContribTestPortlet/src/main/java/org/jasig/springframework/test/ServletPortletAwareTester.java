@@ -36,8 +36,9 @@ import org.springframework.web.portlet.context.PortletContextAware;
 
 /**
  * Utility that prints out info about the app context it is wired up in
- * 
+ *
  * @author Eric Dalquist
+ * @version $Id: $Id
  */
 public class ServletPortletAwareTester 
         implements ApplicationContextAware, DisposableBean, ServletContextAware, ServletConfigAware, PortletContextAware, PortletConfigAware {
@@ -45,31 +46,41 @@ public class ServletPortletAwareTester
     
     private final String name;
 
+    /**
+     * <p>Constructor for ServletPortletAwareTester.</p>
+     *
+     * @param name a {@link java.lang.String} object.
+     */
     public ServletPortletAwareTester(String name) {
         this.name = name;
         logger.debug("Created {}({})", this.getClass().getSimpleName(), this.name);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void setPortletConfig(PortletConfig portletConfig) {
         logger.debug("{} - set PortletConfig {}", this.name, portletConfig.getPortletName());        
     }
 
+    /** {@inheritDoc} */
     @Override
     public void setPortletContext(PortletContext portletContext) {
         logger.debug("{} - set PortletContext {}", this.name, portletContext.getPortletContextName());
     }
 
+    /** {@inheritDoc} */
     @Override
     public void setServletConfig(ServletConfig servletConfig) {
         logger.debug("{} - set ServletConfig {}", this.name, servletConfig.getServletName());        
     }
 
+    /** {@inheritDoc} */
     @Override
     public void setServletContext(ServletContext servletContext) {
         logger.debug("{} - set ServletContext {}", this.name, servletContext.getContextPath());
     }
 
+    /** {@inheritDoc} */
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         logger.debug("{} - ApplicationContext is a {}", this.name, applicationContext.getClass());
@@ -90,6 +101,7 @@ public class ServletPortletAwareTester
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public void destroy() throws Exception {
         logger.debug("{} - destroy", this.name);        

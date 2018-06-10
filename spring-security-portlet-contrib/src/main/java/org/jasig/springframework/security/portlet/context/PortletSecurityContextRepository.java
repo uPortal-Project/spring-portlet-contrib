@@ -26,9 +26,9 @@ import org.springframework.security.web.context.SaveContextOnUpdateOrErrorRespon
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 
 /**
- * Strategy used for persisting a {@link SecurityContext} between requests.
+ * Strategy used for persisting a {@link org.springframework.security.core.context.SecurityContext} between requests.
  * <p>
- * Used by {@link SecurityContextPersistenceFilter} to obtain the context which should be used for the current thread
+ * Used by {@link org.springframework.security.web.context.SecurityContextPersistenceFilter} to obtain the context which should be used for the current thread
  * of execution and to store the context once it has been removed from thread-local storage and the request has
  * completed.
  * <p>
@@ -37,10 +37,10 @@ import org.springframework.security.web.context.SecurityContextPersistenceFilter
  *
  * @author Eric Dalquist
  * @since 3.0
- *
  * @see PortletSecurityContextPersistenceFilter
  * @see HttpSessionSecurityContextRepository
  * @see SaveContextOnUpdateOrErrorResponseWrapper TODO
+ * @version $Id: $Id
  */
 public interface PortletSecurityContextRepository {
 
@@ -52,11 +52,10 @@ public interface PortletSecurityContextRepository {
      * the request or response (or both), allowing them to access implementation-specific state for the request.
      * The values obtained from the holder will be passed on to the filter chain and also to the <tt>saveContext</tt>
      * method when it is finally called. Implementations may wish to return a subclass of
-     * {@link SaveContextOnUpdateOrErrorResponseWrapper} as the response object, which guarantees that the context is
+     * {@link org.springframework.security.web.context.SaveContextOnUpdateOrErrorResponseWrapper} as the response object, which guarantees that the context is
      * persisted when an error or redirect occurs.
      *
      * @param requestResponseHolder holder for the current request and response for which the context should be loaded.
-     *
      * @return The security context which should be used for the current request, never null.
      */
     SecurityContext loadContext(PortletRequestResponseHolder requestResponseHolder);

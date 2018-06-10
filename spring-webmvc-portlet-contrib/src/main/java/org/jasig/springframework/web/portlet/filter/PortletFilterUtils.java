@@ -40,16 +40,23 @@ import javax.portlet.filter.ResourceFilter;
 
 /**
  * Utilities for interacting with a portlet filter chain
- * 
+ *
  * @author Eric Dalquist
+ * @version $Id: $Id
  */
 public final class PortletFilterUtils {
     private PortletFilterUtils() {
     }
     
     /**
-     * Call doFilter and use the {@link PortletRequest#LIFECYCLE_PHASE} attribute to figure out what
-     * type of request/response are in use and call the appropriate doFilter method on {@link FilterChain}
+     * Call doFilter and use the {@link javax.portlet.PortletRequest#LIFECYCLE_PHASE} attribute to figure out what
+     * type of request/response are in use and call the appropriate doFilter method on {@link javax.portlet.filter.FilterChain}
+     *
+     * @param request a {@link javax.portlet.PortletRequest} object.
+     * @param response a {@link javax.portlet.PortletResponse} object.
+     * @param chain a {@link javax.portlet.filter.FilterChain} object.
+     * @throws java.io.IOException if any.
+     * @throws javax.portlet.PortletException if any.
      */
     public static void doFilter(PortletRequest request, PortletResponse response, FilterChain chain)
             throws IOException, PortletException {
@@ -74,8 +81,15 @@ public final class PortletFilterUtils {
     }
     
     /**
-     * Call doFilter on the specified {@link PortletFilter}, determines the right PortletFilter interface to use by
-     * looking at the {@link PortletRequest#LIFECYCLE_PHASE} attribute
+     * Call doFilter on the specified {@link javax.portlet.filter.PortletFilter}, determines the right PortletFilter interface to use by
+     * looking at the {@link javax.portlet.PortletRequest#LIFECYCLE_PHASE} attribute
+     *
+     * @param filter a {@link javax.portlet.filter.PortletFilter} object.
+     * @param request a {@link javax.portlet.PortletRequest} object.
+     * @param response a {@link javax.portlet.PortletResponse} object.
+     * @param chain a {@link javax.portlet.filter.FilterChain} object.
+     * @throws java.io.IOException if any.
+     * @throws javax.portlet.PortletException if any.
      */
     public static void doFilter(PortletFilter filter, PortletRequest request, PortletResponse response, FilterChain chain)
             throws IOException, PortletException {

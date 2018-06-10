@@ -66,14 +66,15 @@ import org.jasig.springframework.web.portlet.filter.PortletFilterUtils;
  * applied to requests which match the pattern. An example configuration might look like this:
  *
  * <pre>
- &lt;bean id="myfilterChainProxy" class="org.jasig.springframework.security.portlet.PortletFilterChainProxy">
-     &lt;constructor-arg>
-         &lt;util:list>
-             &lt;security:filter-chain pattern="/do/not/filter*" filters="none"/>
-             &lt;security:filter-chain pattern="/**" filters="filter1,filter2,filter3"/>
-         &lt;/util:list>
-     &lt;/constructor-arg>
- &lt;/bean>
+ &lt;bean id="myfilterChainProxy" class="org.jasig.springframework.security.portlet.PortletFilterChainProxy"&gt;
+     &lt;constructor-arg&gt;
+         &lt;util:list&gt;
+             &lt;security:filter-chain pattern="/do/not/filter*" filters="none"/&gt;
+/**
+ * " filters="filter1,filter2,filter3"/&gt;
+ *         &lt;/util:list&gt;
+ *     &lt;/constructor-arg&gt;
+ * &lt;/bean&gt;
  * </pre>
  *
  * The names "filter1", "filter2", "filter3" should be the bean names of {@code PortletFilter} instances defined in the
@@ -98,7 +99,7 @@ import org.jasig.springframework.web.portlet.filter.PortletFilterUtils;
  * <h2>Filter Lifecycle</h2>
  * <p>
  * Note the {@code PortletFilter} lifecycle mismatch between the portlet container and IoC
- * container. As described in the {@link DelegatingPortletFilterProxy} Javadocs, we recommend you allow the IoC
+ * container. As described in the {@link org.jasig.springframework.web.portlet.filter.DelegatingPortletFilterProxy} Javadocs, we recommend you allow the IoC
  * container to manage the lifecycle instead of the servlet container. {@code PortletFilterChainProxy} does not invoke the
  * standard filter lifecycle methods on any filter beans that you add to the application context.
  *
@@ -107,6 +108,7 @@ import org.jasig.springframework.web.portlet.filter.PortletFilterUtils;
  * @author Luke Taylor
  * @author Rob Winch
  * @author Eric Dalquist
+ * @version $Id: $Id
  */
 public class PortletFilterChainProxy extends GenericPortletFilterBean {
     //~ Static fields/initializers =====================================================================================
@@ -121,22 +123,37 @@ public class PortletFilterChainProxy extends GenericPortletFilterBean {
 
     //~ Methods ========================================================================================================
 
+    /**
+     * <p>Constructor for PortletFilterChainProxy.</p>
+     */
     public PortletFilterChainProxy() {
     }
 
+    /**
+     * <p>Constructor for PortletFilterChainProxy.</p>
+     *
+     * @param chain a {@link org.jasig.springframework.security.portlet.PortletSecurityFilterChain} object.
+     */
     public PortletFilterChainProxy(PortletSecurityFilterChain chain) {
         this(Arrays.asList(chain));
     }
 
+    /**
+     * <p>Constructor for PortletFilterChainProxy.</p>
+     *
+     * @param filterChains a {@link java.util.List} object.
+     */
     public PortletFilterChainProxy(List<PortletSecurityFilterChain> filterChains) {
         this.filterChains = filterChains;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void afterPropertiesSet() {
         filterChainValidator.validate(this);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void doCommonFilter(PortletRequest request, PortletResponse response, FilterChain chain)
             throws IOException, PortletException {
@@ -201,8 +218,7 @@ public class PortletFilterChainProxy extends GenericPortletFilterBean {
      * will not affect the PortletFilterChainProxy state.
      *
      * @return the map of path pattern Strings to filter chain lists (with ordering guaranteed).
-     *
-     * @deprecated use the list of {@link PortletSecurityFilterChain}s instead
+     * @deprecated use the list of {@link org.jasig.springframework.security.portlet.PortletSecurityFilterChain}s instead
      */
     @Deprecated
     public Map<RequestMatcher, List<PortletFilter>> getFilterChainMap() {
@@ -216,6 +232,8 @@ public class PortletFilterChainProxy extends GenericPortletFilterBean {
     }
 
     /**
+     * <p>Getter for the field <code>filterChains</code>.</p>
+     *
      * @return the list of {@code PortletSecurityFilterChain}s which will be matched against and
      *         applied to incoming requests.
      */
@@ -233,6 +251,11 @@ public class PortletFilterChainProxy extends GenericPortletFilterBean {
         this.filterChainValidator = filterChainValidator;
     }
 
+    /**
+     * <p>toString.</p>
+     *
+     * @return a {@link java.lang.String} object.
+     */
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("PortletFilterChainProxy[");
@@ -262,7 +285,7 @@ public class PortletFilterChainProxy extends GenericPortletFilterBean {
             this.size = additionalFilters.size();
             this.portletRequest = portletRequest;
         }
-        
+
         @Override
         public void doFilter(ActionRequest request, ActionResponse response) throws IOException, PortletException {
             doCommonFilter(request, response);
@@ -270,7 +293,7 @@ public class PortletFilterChainProxy extends GenericPortletFilterBean {
 
         @Override
         public void doFilter(EventRequest request, EventResponse response) throws IOException, PortletException {
-            doCommonFilter(request, response); 
+            doCommonFilter(request, response);
         }
 
         @Override

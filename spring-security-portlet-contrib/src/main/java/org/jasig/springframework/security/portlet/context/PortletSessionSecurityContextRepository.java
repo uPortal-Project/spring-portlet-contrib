@@ -38,9 +38,9 @@ import org.springframework.util.Assert;
  * between requests.
  * <p>
  * The {@code PortletSession} will be queried to retrieve the {@code SecurityContext} in the <tt>loadContext</tt>
- * method (using the key {@link HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY} by default).
+ * method (using the key SPRING_SECURITY_CONTEXT_KEY by default).
  * If a valid {@code SecurityContext} cannot be obtained from the {@code PortletSession} for whatever reason,
- * a fresh {@code SecurityContext} will be created by calling by {@link SecurityContextHolder#createEmptyContext()}
+ * a fresh {@code SecurityContext} will be created by calling by {@link org.springframework.security.core.context.SecurityContextHolder#createEmptyContext()}
  * and this instance will be returned instead.
  * <p>
  * When <tt>saveContext</tt> is called, the context will be stored under the same key, provided
@@ -55,7 +55,7 @@ import org.springframework.util.Assert;
  * {@code PortletSession} will <b>only</b> be created if the supplied {@code SecurityContext} is not equal
  * to an empty {@code SecurityContext} instance. This avoids needless <code>PortletSession</code> creation,
  * but automates the storage of changes made to the context during the request. Note that if
- * {@link SecurityContextPersistenceFilter} is configured to eagerly create sessions, then the session-minimisation
+ * {@link org.springframework.security.web.context.SecurityContextPersistenceFilter} is configured to eagerly create sessions, then the session-minimisation
  * logic applied here will not make any difference. If you are using eager session creation, then you should
  * ensure that the <tt>allowSessionCreation</tt> property of this class is set to <tt>true</tt> (the default).
  * <p>
@@ -68,6 +68,7 @@ import org.springframework.util.Assert;
  *
  * @author Eric Dalquist
  * @since 3.0
+ * @version $Id: $Id
  */
 public class PortletSessionSecurityContextRepository implements PortletSecurityContextRepository {
     protected final Log logger = LogFactory.getLog(this.getClass());
@@ -79,19 +80,26 @@ public class PortletSessionSecurityContextRepository implements PortletSecurityC
 
     private final AuthenticationTrustResolver authenticationTrustResolver = new AuthenticationTrustResolverImpl();
     private final int sessionScope;
-    
+
+    /**
+     * <p>Constructor for PortletSessionSecurityContextRepository.</p>
+     */
     public PortletSessionSecurityContextRepository() {
         this.sessionScope = PortletSession.APPLICATION_SCOPE;
     }
 
     /**
      * Set the PortletSession scope under which to store the security context
+     *
+     * @param sessionScope a int.
      */
     public PortletSessionSecurityContextRepository(int sessionScope) {
         this.sessionScope = sessionScope;
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Gets the security context for the current request (if available) and returns it.
      * <p>
      * If the session is null, the context object is null or the context object stored in the session
@@ -102,7 +110,7 @@ public class PortletSessionSecurityContextRepository implements PortletSecurityC
     public SecurityContext loadContext(PortletRequestResponseHolder requestResponseHolder) {
         final PortletRequest request = requestResponseHolder.getRequest();
         final PortletSession portletSession = request.getPortletSession(false);
-        
+
         SecurityContext context = readSecurityContextFromSession(portletSession);
 
         if (context == null) {
@@ -122,6 +130,7 @@ public class PortletSessionSecurityContextRepository implements PortletSecurityC
         return context;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void saveContext(SecurityContext context, PortletRequestResponseHolder requestResponseHolder) {
         final Authentication authentication = context.getAuthentication();
@@ -212,6 +221,7 @@ public class PortletSessionSecurityContextRepository implements PortletSecurityC
         return null;
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean containsContext(PortletRequest request) {
         final PortletSession portletSession = request.getPortletSession(false);
@@ -272,9 +282,9 @@ public class PortletSessionSecurityContextRepository implements PortletSecurityC
     }
 
     /**
-     * By default, calls {@link SecurityContextHolder#createEmptyContext()} to obtain a new context (there should be
+     * By default, calls {@link org.springframework.security.core.context.SecurityContextHolder#createEmptyContext()} to obtain a new context (there should be
      * no context present in the holder when this method is called). Using this approach the context creation
-     * strategy is decided by the {@link SecurityContextHolderStrategy} in use. The default implementations
+     * strategy is decided by the {@link org.springframework.security.core.context.SecurityContextHolderStrategy} in use. The default implementations
      * will return a new <tt>SecurityContextImpl</tt>.
      *
      * @return a new SecurityContext instance. Never null.
@@ -291,7 +301,7 @@ public class PortletSessionSecurityContextRepository implements PortletSecurityC
      * application (or another filter) creates a session, then the security context will still be stored for an
      * authenticated user.
      *
-     * @param allowSessionCreation
+     * @param allowSessionCreation a boolean.
      */
     public void setAllowSessionCreation(boolean allowSessionCreation) {
         this.allowSessionCreation = allowSessionCreation;
@@ -300,8 +310,7 @@ public class PortletSessionSecurityContextRepository implements PortletSecurityC
     /**
      * Allows the session attribute name to be customized for this repository instance.
      *
-     * @param springSecurityContextKey the key under which the security context will be stored. Defaults to
-     * {@link #SPRING_SECURITY_CONTEXT_KEY}.
+     * @param springSecurityContextKey the key under which the security context will be stored.
      */
     public void setSpringSecurityContextKey(String springSecurityContextKey) {
         Assert.hasText(springSecurityContextKey, "springSecurityContextKey cannot be empty");

@@ -52,12 +52,12 @@ import org.springframework.web.portlet.context.XmlPortletApplicationContext;
 
 /**
  * Performs the actual initialization work for the root application context.
- * Called by {@link PortletContextLoaderListener}.
+ * Called by {@link org.jasig.springframework.web.portlet.context.PortletContextLoaderListener}.
  *
  * <p>Looks for a {@link #CONTEXT_CLASS_PARAM "portletContextClass"} context-param
  * at the <code>web.xml</code> level to specify the context
  * class type, falling back to the default of
- * {@link ContribXmlPortletApplicationContext}
+ * {@link org.jasig.springframework.web.portlet.context.ContribXmlPortletApplicationContext}
  * if not found. With the default PortletContextLoader implementation, any context class
  * specified needs to implement the ConfigurablePortletApplicationContext interface.
  *
@@ -68,7 +68,7 @@ import org.springframework.web.portlet.context.XmlPortletApplicationContext;
  * WEB-INF/portletApplicationContext2.xml". Ant-style path patterns are supported as well,
  * e.g. "WEB-INF/portlet*Context.xml,WEB-INF/springPortlet*.xml" or "WEB-INF/&#42;&#42;/portlet*Context.xml".
  * If not explicitly specified, the context implementation is supposed to use a
- * default location (with {@link ContribXmlPortletApplicationContext}: "/WEB-INF/portletApplicationContext.xml").
+ * default location (with {@link org.jasig.springframework.web.portlet.context.ContribXmlPortletApplicationContext}: "/WEB-INF/portletApplicationContext.xml").
  *
  * <p>Note: In case of multiple config locations, later bean definitions will
  * override ones defined in previously loaded files, at least when using one of
@@ -87,13 +87,13 @@ import org.springframework.web.portlet.context.XmlPortletApplicationContext;
  * @see PortletContextLoaderListener
  * @see PortletApplicationContext
  * @see XmlPortletApplicationContext
+ * @version $Id: $Id
  */
 public class PortletContextLoader {
-    
+
     /**
      * Config param for the root {@link PortletApplicationContext} implementation class to use: {@value}
      * @see #determineContextClass(PortletContext)
-     * @see #createWebApplicationContext(PortletContext, ApplicationContext)
      */
     public static final String CONTEXT_CLASS_PARAM = "portletContextClass";
 
@@ -152,7 +152,7 @@ public class PortletContextLoader {
      * deployed in the web app ClassLoader itself.
      */
     private static volatile PortletApplicationContext currentContext;
-    
+
     /**
      * The {@link ServletContext} the portlet application exists in
      */
@@ -168,7 +168,12 @@ public class PortletContextLoader {
      * ContextSingletonBeanFactoryLocator.
      */
     private BeanFactoryReference parentContextRef;
-    
+
+    /**
+     * <p>Constructor for PortletContextLoader.</p>
+     *
+     * @param servletContext a {@link javax.servlet.ServletContext} object.
+     */
     public PortletContextLoader(ServletContext servletContext) {
         this.servletContext = servletContext;
     }
@@ -178,8 +183,11 @@ public class PortletContextLoader {
      * using the application context provided at construction time, or creating a new one
      * according to the "{@link #CONTEXT_CLASS_PARAM contextClass}" and
      * "{@link #CONFIG_LOCATION_PARAM contextConfigLocation}" context-params.
+     *
      * @param portletContext current portlet context
      * @return the new PortletApplicationContext
+     * @see #CONTEXT_CLASS_PARAM
+     * @see #CONFIG_LOCATION_PARAM
      * @see #CONTEXT_CLASS_PARAM
      * @see #CONFIG_LOCATION_PARAM
      */
@@ -243,10 +251,11 @@ public class PortletContextLoader {
      * Instantiate the root PortletApplicationContext for this loader, either the
      * default context class or a custom context class if specified.
      * <p>This implementation expects custom contexts to implement the
-     * {@link ConfigurablePortletApplicationContext} interface.
+     * {@link org.springframework.web.portlet.context.ConfigurablePortletApplicationContext} interface.
      * Can be overridden in subclasses.
      * <p>In addition, {@link #customizeContext} gets called prior to refreshing the
      * context, allowing subclasses to perform custom modifications to the context.
+     *
      * @param sc current portlet context
      * @return the root WebApplicationContext
      * @see ConfigurablePortletApplicationContext
@@ -262,6 +271,12 @@ public class PortletContextLoader {
         return wac;
     }
 
+    /**
+     * <p>configureAndRefreshPortletApplicationContext.</p>
+     *
+     * @param pac a {@link org.springframework.web.portlet.context.ConfigurablePortletApplicationContext} object.
+     * @param pc a {@link javax.portlet.PortletContext} object.
+     */
     protected void configureAndRefreshPortletApplicationContext(ConfigurablePortletApplicationContext pac, PortletContext pc) {
         if (ObjectUtils.identityToString(pac).equals(pac.getId())) {
             // The application context id is still set to its original default value
@@ -301,9 +316,11 @@ public class PortletContextLoader {
     /**
      * Return the PortletApplicationContext implementation class to use, either the
      * default XmlPortletApplicationContext or a custom context class if specified.
+     *
      * @param portletContext current portlet context
      * @return the WebApplicationContext implementation class to use
      * @see #CONTEXT_CLASS_PARAM
+     * @see org.springframework.web.portlet.context.XmlPortletApplicationContext
      * @see org.springframework.web.portlet.context.XmlPortletApplicationContext
      */
     protected Class<?> determineContextClass(PortletContext portletContext) {
@@ -330,10 +347,12 @@ public class PortletContextLoader {
     }
 
     /**
-     * Return the {@link ApplicationContextInitializer} implementation classes to use
+     * Return the {@link org.springframework.context.ApplicationContextInitializer} implementation classes to use
      * if any have been specified by {@link #CONTEXT_INITIALIZER_CLASSES_PARAM}.
+     *
      * @param portletContext current portlet context
      * @see #CONTEXT_INITIALIZER_CLASSES_PARAM
+     * @return a {@link java.util.List} object.
      */
     @SuppressWarnings("unchecked")
     protected List<Class<ApplicationContextInitializer<ConfigurableApplicationContext>>>
@@ -359,7 +378,7 @@ public class PortletContextLoader {
     }
 
     /**
-     * Customize the {@link ConfigurablePortletApplicationContext} created by this
+     * Customize the {@link org.springframework.web.portlet.context.ConfigurablePortletApplicationContext} created by this
      * PortletContextLoader after config locations have been supplied to the context
      * but before the context is <em>refreshed</em>.
      * <p>The default implementation {@linkplain #determineContextInitializerClasses(PortletContext)
@@ -370,10 +389,15 @@ public class PortletContextLoader {
      * <p>Any {@code ApplicationContextInitializers} implementing
      * {@link org.springframework.core.Ordered Ordered} or marked with @{@link
      * org.springframework.core.annotation.Order Order} will be sorted appropriately.
+     *
      * @param portletContext the current portlet context
      * @param applicationContext the newly created application context
      * @see #createPortletApplicationContext(PortletContext)
      * @see #CONTEXT_INITIALIZER_CLASSES_PARAM
+     * @see ApplicationContextInitializer#initialize(ConfigurableApplicationContext)
+     * @see #createPortletApplicationContext(PortletContext)
+     * @see #CONTEXT_INITIALIZER_CLASSES_PARAM
+     * @see ApplicationContextInitializer#initialize(ConfigurableApplicationContext)
      * @see ApplicationContextInitializer#initialize(ConfigurableApplicationContext)
      */
     protected void customizeContext(PortletContext portletContext, ConfigurablePortletApplicationContext applicationContext) {
@@ -398,7 +422,7 @@ public class PortletContextLoader {
                     "context loader [%s]", initializerClass.getName(), initializerContextClass, contextClass));
             initializerInstances.add(BeanUtils.instantiateClass(initializerClass));
         }
-        
+
         //TODO remove cast when ContribXmlPortletApplicationContext is merged into super classes
         ((ConfigurablePortletEnvironment)applicationContext.getEnvironment()).initPropertySources(this.servletContext, portletContext, null);
 
@@ -414,8 +438,9 @@ public class PortletContextLoader {
      * used as the parent context of the root PortletApplicationContext. If the
      * return value from the method is null, no parent context is set.
      * <p>The default implementation uses
-     * {@link PortletApplicationContextUtils#getWebApplicationContext(PortletContext)}
+     * {@link org.springframework.web.portlet.context.PortletApplicationContextUtils#getWebApplicationContext(PortletContext)}
      * to load a parent context.
+     *
      * @param portletContext current portlet context
      * @return the parent application context, or <code>null</code> if none
      */
@@ -430,6 +455,7 @@ public class PortletContextLoader {
      * parent context, release one reference to that shared parent context.
      * <p>If overriding {@link #loadParentContext(PortletContext)}, you may have
      * to override this method as well.
+     *
      * @param servletContext the PortletContext that the WebApplicationContext runs in
      */
     public void closeWebApplicationContext(ServletContext servletContext) {
@@ -459,6 +485,7 @@ public class PortletContextLoader {
      * Obtain the Spring root portlet application context for the current thread
      * (i.e. for the current thread's context ClassLoader, which needs to be
      * the web application's ClassLoader).
+     *
      * @return the current root web application context, or <code>null</code>
      * if none found
      * @see org.springframework.web.context.support.SpringBeanAutowiringSupport

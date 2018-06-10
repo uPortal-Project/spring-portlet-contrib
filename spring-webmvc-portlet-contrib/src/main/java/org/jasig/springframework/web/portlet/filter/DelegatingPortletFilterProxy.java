@@ -81,17 +81,60 @@ import org.springframework.web.portlet.context.PortletApplicationContextUtils;
  * @see javax.portlet.filter.ResourceFilter#doFilter
  * @see javax.portlet.filter.PortletFilter#init
  * @see javax.portlet.filter.PortletFilter#destroy
- * @see #DelegatingFilterProxy(Filter)
- * @see #DelegatingFilterProxy(String)
- * @see #DelegatingFilterProxy(String, WebApplicationContext)
  * @see org.springframework.web.WebApplicationInitializer
+ * @see #setTargetBeanName
+ * @see #setTargetFilterLifecycle
+ * @see javax.portlet.filter.ActionFilter#doFilter
+ * @see javax.portlet.filter.EventFilter#doFilter
+ * @see javax.portlet.filter.RenderFilter#doFilter
+ * @see javax.portlet.filter.ResourceFilter#doFilter
+ * @see javax.portlet.filter.PortletFilter#init
+ * @see javax.portlet.filter.PortletFilter#destroy
+ * @see org.springframework.web.WebApplicationInitializer
+ * @see javax.portlet.filter.ActionFilter#doFilter
+ * @see javax.portlet.filter.EventFilter#doFilter
+ * @see javax.portlet.filter.RenderFilter#doFilter
+ * @see javax.portlet.filter.ResourceFilter#doFilter
+ * @see javax.portlet.filter.PortletFilter#init
+ * @see javax.portlet.filter.PortletFilter#destroy
+ * @see javax.portlet.filter.PortletFilter#init
+ * @see javax.portlet.filter.PortletFilter#destroy
+ * @see #setTargetBeanName
+ * @see #setTargetFilterLifecycle
+ * @see javax.portlet.filter.ActionFilter#doFilter
+ * @see javax.portlet.filter.EventFilter#doFilter
+ * @see javax.portlet.filter.RenderFilter#doFilter
+ * @see javax.portlet.filter.ResourceFilter#doFilter
+ * @see javax.portlet.filter.PortletFilter#init
+ * @see javax.portlet.filter.PortletFilter#destroy
+ * @see org.springframework.web.WebApplicationInitializer
+ * @see #setTargetBeanName
+ * @see #setTargetFilterLifecycle
+ * @see javax.portlet.filter.ActionFilter#doFilter
+ * @see javax.portlet.filter.EventFilter#doFilter
+ * @see javax.portlet.filter.RenderFilter#doFilter
+ * @see javax.portlet.filter.ResourceFilter#doFilter
+ * @see javax.portlet.filter.PortletFilter#init
+ * @see javax.portlet.filter.PortletFilter#destroy
+ * @see org.springframework.web.WebApplicationInitializer
+ * @see #setTargetBeanName
+ * @see #setTargetFilterLifecycle
+ * @see javax.portlet.filter.ActionFilter#doFilter
+ * @see javax.portlet.filter.EventFilter#doFilter
+ * @see javax.portlet.filter.RenderFilter#doFilter
+ * @see javax.portlet.filter.ResourceFilter#doFilter
+ * @see javax.portlet.filter.PortletFilter#init
+ * @see javax.portlet.filter.PortletFilter#destroy
+ * @see org.springframework.web.WebApplicationInitializer
+ * @see org.springframework.web.WebApplicationInitializer
+ * @version $Id: $Id
  */
 public class DelegatingPortletFilterProxy extends GenericPortletFilterBean {
 
     private String targetBeanName;
 
     private boolean targetFilterLifecycle = false;
-    
+
     private String contextAttribute;
 
     private PortletFilter delegate;
@@ -107,7 +150,9 @@ public class DelegatingPortletFilterProxy extends GenericPortletFilterBean {
 
     /**
      * Set the name of the ServletContext attribute which should be used to retrieve the
-     * {@link PortletApplicationContext} from which to load the delegate {@link PortletFilter} bean.
+     * {@link org.jasig.springframework.web.portlet.context.PortletApplicationContext} from which to load the delegate {@link javax.portlet.filter.PortletFilter} bean.
+     *
+     * @param contextAttribute a {@link java.lang.String} object.
      */
     public void setContextAttribute(String contextAttribute) {
         this.contextAttribute = contextAttribute;
@@ -115,7 +160,9 @@ public class DelegatingPortletFilterProxy extends GenericPortletFilterBean {
 
     /**
      * Return the name of the ServletContext attribute which should be used to retrieve the
-     * {@link PortletApplicationContext} from which to load the delegate {@link PortletFilter} bean.
+     * {@link org.jasig.springframework.web.portlet.context.PortletApplicationContext} from which to load the delegate {@link javax.portlet.filter.PortletFilter} bean.
+     *
+     * @return a {@link java.lang.String} object.
      */
     public String getContextAttribute() {
         return this.contextAttribute;
@@ -126,6 +173,8 @@ public class DelegatingPortletFilterProxy extends GenericPortletFilterBean {
      * The target bean must implement the standard Portlet 2.0 PortletFilter interface.
      * <p>By default, the <code>filter-name</code> as specified for the
      * DelegatingPortletFilterProxy in <code>portlet.xml</code> will be used.
+     *
+     * @param targetBeanName a {@link java.lang.String} object.
      */
     public void setTargetBeanName(String targetBeanName) {
         this.targetBeanName = targetBeanName;
@@ -133,6 +182,8 @@ public class DelegatingPortletFilterProxy extends GenericPortletFilterBean {
 
     /**
      * Return the name of the target bean in the Spring application context.
+     *
+     * @return a {@link java.lang.String} object.
      */
     protected String getTargetBeanName() {
         return this.targetBeanName;
@@ -145,6 +196,8 @@ public class DelegatingPortletFilterProxy extends GenericPortletFilterBean {
      * context for managing their lifecycle. Setting this flag to "true" means
      * that the portlet container will control the lifecycle of the target
      * PortletFilter, with this proxy delegating the corresponding calls.
+     *
+     * @param targetFilterLifecycle a boolean.
      */
     public void setTargetFilterLifecycle(boolean targetFilterLifecycle) {
         this.targetFilterLifecycle = targetFilterLifecycle;
@@ -153,12 +206,19 @@ public class DelegatingPortletFilterProxy extends GenericPortletFilterBean {
     /**
      * Return whether to invoke the <code>PortletFilter.init</code> and
      * <code>PortletFilter.destroy</code> lifecycle methods on the target bean.
+     *
+     * @return a boolean.
      */
     protected boolean isTargetFilterLifecycle() {
         return this.targetFilterLifecycle;
     }
 
 
+    /**
+     * <p>initFilterBean.</p>
+     *
+     * @throws javax.portlet.PortletException if any.
+     */
     protected void initFilterBean() throws PortletException {
         // If no target bean name specified, use filter name.
         if (this.targetBeanName == null) {
@@ -171,13 +231,14 @@ public class DelegatingPortletFilterProxy extends GenericPortletFilterBean {
         initDelegate(false);
     }
 
-    
+
+    /** {@inheritDoc} */
     public void doFilter(ResourceRequest request, ResourceResponse response, FilterChain chain) throws IOException,
             PortletException {
-        
+
         // Lazily initialize the delegate if necessary.
         initDelegate(true);
-        
+
         if (this.resourceDelegate == null) {
             throw new IllegalStateException("The delegate PortletFilter does not implement ResourceFilter but " + this.getFilterName() + " is configured with the RESOURCE_PHASE lifecycle.");
         }
@@ -186,12 +247,13 @@ public class DelegatingPortletFilterProxy extends GenericPortletFilterBean {
         invokeDelegate(this.resourceDelegate, request, response, chain);
     }
 
+    /** {@inheritDoc} */
     public void doFilter(EventRequest request, EventResponse response, FilterChain chain) throws IOException,
             PortletException {
-        
+
         // Lazily initialize the delegate if necessary.
         initDelegate(true);
-        
+
         if (this.eventDelegate == null) {
             throw new IllegalStateException("The delegate PortletFilter does not implement EventFilter but " + this.getFilterName() + " is configured with the EVENT_PHASE lifecycle.");
         }
@@ -200,12 +262,13 @@ public class DelegatingPortletFilterProxy extends GenericPortletFilterBean {
         invokeDelegate(this.eventDelegate, request, response, chain);
     }
 
+    /** {@inheritDoc} */
     public void doFilter(RenderRequest request, RenderResponse response, FilterChain chain) throws IOException,
             PortletException {
-        
+
         // Lazily initialize the delegate if necessary.
         initDelegate(true);
-        
+
         if (this.renderDelegate == null) {
             throw new IllegalStateException("The delegate PortletFilter does not implement RenderFilter but " + this.getFilterName() + " is configured with the RENDER_PHASE lifecycle.");
         }
@@ -214,12 +277,13 @@ public class DelegatingPortletFilterProxy extends GenericPortletFilterBean {
         invokeDelegate(this.renderDelegate, request, response, chain);
     }
 
+    /** {@inheritDoc} */
     public void doFilter(ActionRequest request, ActionResponse response, FilterChain chain) throws IOException,
             PortletException {
-        
+
         // Lazily initialize the delegate if necessary.
         initDelegate(true);
-        
+
         if (this.actionDelegate == null) {
             throw new IllegalStateException("The delegate PortletFilter does not implement ActionFilter but " + this.getFilterName() + " is configured with the ACTION_PHASE lifecycle.");
         }
@@ -228,6 +292,9 @@ public class DelegatingPortletFilterProxy extends GenericPortletFilterBean {
         invokeDelegate(this.actionDelegate, request, response, chain);
     }
 
+    /**
+     * <p>destroy.</p>
+     */
     public void destroy() {
         PortletFilter delegateToUse = null;
         delegateReadLock.lock();
@@ -237,7 +304,7 @@ public class DelegatingPortletFilterProxy extends GenericPortletFilterBean {
         finally {
             delegateReadLock.unlock();
         }
-        
+
         if (delegateToUse != null) {
             destroyDelegate(delegateToUse);
         }
@@ -250,6 +317,7 @@ public class DelegatingPortletFilterProxy extends GenericPortletFilterBean {
      * <code>PortletContext</code> before this filter gets initialized (or invoked).
      * <p>Subclasses may override this method to provide a different
      * <code>WebApplicationContext</code> retrieval strategy.
+     *
      * @return the WebApplicationContext for this proxy, or <code>null</code> if not found
      */
     protected ApplicationContext findWebApplicationContext() {
@@ -261,11 +329,11 @@ public class DelegatingPortletFilterProxy extends GenericPortletFilterBean {
         else {
             portletApplicationContext = PortletApplicationContextUtils2.getPortletApplicationContext(getPortletContext());
         }
-        
+
         if (portletApplicationContext != null) {
             return portletApplicationContext;
         }
-        
+
         return PortletApplicationContextUtils.getWebApplicationContext(getPortletContext());
     }
 
@@ -275,18 +343,27 @@ public class DelegatingPortletFilterProxy extends GenericPortletFilterBean {
      * <p>The default implementation fetches the bean from the application context
      * and calls the standard <code>PortletFilter.init</code> method on it, passing
      * in the FilterConfig of this PortletFilter proxy.
-     * @param wac the root application context
-     * @return the initialized delegate PortletFilter
-     * @throws PortletException if thrown by the PortletFilter
+     *
+     * @throws javax.portlet.PortletException if thrown by the PortletFilter
      * @see #getTargetBeanName()
      * @see #isTargetFilterLifecycle()
      * @see #getFilterConfig()
      * @see javax.portlet.filter.PortletFilter#init(javax.portlet.filter.FilterConfig)
+     * @see #getTargetBeanName()
+     * @see #isTargetFilterLifecycle()
+     * @see #getFilterConfig()
+     * @see javax.portlet.filter.PortletFilter#init(javax.portlet.filter.FilterConfig)
+     * @see #getTargetBeanName()
+     * @see #isTargetFilterLifecycle()
+     * @see #getFilterConfig()
+     * @see javax.portlet.filter.PortletFilter#init(javax.portlet.filter.FilterConfig)
+     * @see javax.portlet.filter.PortletFilter#init(javax.portlet.filter.FilterConfig)
+     * @param require a boolean.
      */
     protected void initDelegate(boolean require) throws PortletException {
         final ApplicationContext wac = findWebApplicationContext();
         PortletFilter delegate = null;
-        
+
         //Check if initialization is complete
         this.delegateReadLock.lock();
         try {
@@ -295,19 +372,19 @@ public class DelegatingPortletFilterProxy extends GenericPortletFilterBean {
         finally {
             this.delegateReadLock.unlock();
         }
-        
+
         //Return if the delegate filter was found
         if (delegate != null) {
             return;
         }
-        
+
         this.delegateWriteLock.lock();
         try {
             //Already initialized
             if (this.delegate != null) {
                 return;
             }
-            
+
             //Verify app context is available
             if (wac == null) {
                 //If required init throw an exception for a missing app context
@@ -318,13 +395,13 @@ public class DelegatingPortletFilterProxy extends GenericPortletFilterBean {
                 //No app context and not required init, just ignore the init request
                 return;
             }
-    
+
             //Load and init the delegate filter
             delegate = wac.getBean(getTargetBeanName(), PortletFilter.class);
             if (isTargetFilterLifecycle()) {
                 delegate.init(getFilterConfig());
             }
-            
+
             //init local fields
             this.delegate = delegate;
             if (delegate instanceof ActionFilter) {
@@ -347,12 +424,13 @@ public class DelegatingPortletFilterProxy extends GenericPortletFilterBean {
 
     /**
      * Actually invoke the delegate ActionFilter with the given request and response.
+     *
      * @param delegate the delegate ActionFilter
      * @param request the current action request
      * @param response the current action response
      * @param filterChain the current FilterChain
-     * @throws PortletException if thrown by the PortletFilter
-     * @throws IOException if thrown by the PortletFilter
+     * @throws javax.portlet.PortletException if thrown by the PortletFilter
+     * @throws java.io.IOException if thrown by the PortletFilter
      */
     protected void invokeDelegate(
             ActionFilter delegate, ActionRequest request, ActionResponse response, FilterChain filterChain)
@@ -363,12 +441,13 @@ public class DelegatingPortletFilterProxy extends GenericPortletFilterBean {
 
     /**
      * Actually invoke the delegate EventFilter with the given request and response.
+     *
      * @param delegate the delegate EventFilter
      * @param request the current Event request
      * @param response the current Event response
      * @param filterChain the current FilterChain
-     * @throws PortletException if thrown by the PortletFilter
-     * @throws IOException if thrown by the PortletFilter
+     * @throws javax.portlet.PortletException if thrown by the PortletFilter
+     * @throws java.io.IOException if thrown by the PortletFilter
      */
     protected void invokeDelegate(
             EventFilter delegate, EventRequest request, EventResponse response, FilterChain filterChain)
@@ -379,12 +458,13 @@ public class DelegatingPortletFilterProxy extends GenericPortletFilterBean {
 
     /**
      * Actually invoke the delegate RenderFilter with the given request and response.
+     *
      * @param delegate the delegate RenderFilter
      * @param request the current Render request
      * @param response the current Render response
      * @param filterChain the current FilterChain
-     * @throws PortletException if thrown by the PortletFilter
-     * @throws IOException if thrown by the PortletFilter
+     * @throws javax.portlet.PortletException if thrown by the PortletFilter
+     * @throws java.io.IOException if thrown by the PortletFilter
      */
     protected void invokeDelegate(
             RenderFilter delegate, RenderRequest request, RenderResponse response, FilterChain filterChain)
@@ -395,12 +475,13 @@ public class DelegatingPortletFilterProxy extends GenericPortletFilterBean {
 
     /**
      * Actually invoke the delegate ResourceFilter with the given request and response.
+     *
      * @param delegate the delegate ResourceFilter
      * @param request the current Resource request
      * @param response the current Resource response
      * @param filterChain the current FilterChain
-     * @throws PortletException if thrown by the PortletFilter
-     * @throws IOException if thrown by the PortletFilter
+     * @throws javax.portlet.PortletException if thrown by the PortletFilter
+     * @throws java.io.IOException if thrown by the PortletFilter
      */
     protected void invokeDelegate(
             ResourceFilter delegate, ResourceRequest request, ResourceResponse response, FilterChain filterChain)
@@ -412,8 +493,10 @@ public class DelegatingPortletFilterProxy extends GenericPortletFilterBean {
     /**
      * Destroy the PortletFilter delegate.
      * Default implementation simply calls <code>PortletFilter.destroy</code> on it.
+     *
      * @param delegate the PortletFilter delegate (never <code>null</code>)
      * @see #isTargetFilterLifecycle()
+     * @see javax.portlet.filter.PortletFilter#destroy()
      * @see javax.portlet.filter.PortletFilter#destroy()
      */
     protected void destroyDelegate(PortletFilter delegate) {

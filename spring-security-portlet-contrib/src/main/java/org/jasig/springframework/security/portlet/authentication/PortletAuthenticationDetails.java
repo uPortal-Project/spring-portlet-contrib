@@ -30,6 +30,7 @@ import org.springframework.security.core.SpringSecurityCoreVersion;
  * A holder of selected portlet details related to a web authentication request.
  *
  * @author Eric Dalquist
+ * @version $Id: $Id
  */
 public class PortletAuthenticationDetails implements Serializable {
 
@@ -54,7 +55,7 @@ public class PortletAuthenticationDetails implements Serializable {
 
         PortletSession session = request.getPortletSession(false);
         this.sessionId = (session != null) ? session.getId() : null;
-        
+
         this.userInfo = (Map<String, String>)request.getAttribute(PortletRequest.USER_INFO);
     }
 
@@ -70,25 +71,26 @@ public class PortletAuthenticationDetails implements Serializable {
     }
 
     /**
-     * Indicates the <code>PortletSession</code> id the authentication request was received from.
+     * Indicates the PortletSession id the authentication request was received from.
      *
      * @return the session ID
      */
     public String getSessionId() {
         return sessionId;
     }
-    
+
     /**
-     * The user info map as returned for the {@link PortletRequest#USER_INFO} request attribute from
+     * The user info map as returned for the {@link javax.portlet.PortletRequest#USER_INFO} request attribute from
      * the authentication request.
-     * 
+     *
      * @return The user info map
      */
     public Map<String, String> getUserInfo() {
         return userInfo;
     }
 
-    
+
+    /** {@inheritDoc} */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -98,7 +100,8 @@ public class PortletAuthenticationDetails implements Serializable {
         result = prime * result + ((userInfo == null) ? 0 : userInfo.hashCode());
         return result;
     }
-    
+
+    /** {@inheritDoc} */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -129,6 +132,7 @@ public class PortletAuthenticationDetails implements Serializable {
         return true;
     }
 
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return "PortletAuthenticationDetails [remoteAddress=" + remoteAddress + ", sessionId=" + sessionId
