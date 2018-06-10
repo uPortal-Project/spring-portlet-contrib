@@ -25,7 +25,7 @@ This project includes:
   Commons Codec under The Apache Software License, Version 2.0
   Commons IO under The Apache Software License, Version 2.0
   Commons Lang under The Apache Software License, Version 2.0
-  ContribTestPortlet under Apache License Version 2.0
+  ContribTestPortlet under Apache License, Version 2.0
   Ehcache Core under The Apache Software License, Version 2.0
   Ehcache Web Filters under The Apache Software License, Version 2.0
   Guava: Google Core Libraries for Java under The Apache Software License, Version 2.0
@@ -49,16 +49,18 @@ This project includes:
   Spring Context under The Apache Software License, Version 2.0
   Spring Core under The Apache Software License, Version 2.0
   Spring Expression Language (SpEL) under The Apache Software License, Version 2.0
-  Spring Portlet Contributions Parent under Apache License Version 2.0
-  Spring Portlet WebMVC Contributions under Apache License Version 2.0
-  Spring Security Portlet Contributions under Apache License Version 2.0
-  Spring Test Contributions under Apache License Version 2.0
+  Spring Portlet Contributions Parent under Apache License, Version 2.0
+  Spring Portlet WebMVC Contributions under Apache License, Version 2.0
+  Spring Security Portlet Contributions under Apache License, Version 2.0
+  Spring Test Contributions under Apache License, Version 2.0
   Spring TestContext Framework under The Apache Software License, Version 2.0
   Spring Web under The Apache Software License, Version 2.0
   Spring Web MVC under The Apache Software License, Version 2.0
   Spring Web Portlet under The Apache Software License, Version 2.0
+  spring-jdbc under Apache License, Version 2.0
   spring-security-config under The Apache Software License, Version 2.0
   spring-security-core under The Apache Software License, Version 2.0
   spring-security-web under The Apache Software License, Version 2.0
+  spring-tx under Apache License, Version 2.0
   standard under Apache License, Version 2.0
 

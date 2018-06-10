@@ -35,12 +35,14 @@ This project includes:
   Spring Context under The Apache Software License, Version 2.0
   Spring Core under The Apache Software License, Version 2.0
   Spring Expression Language (SpEL) under The Apache Software License, Version 2.0
-  Spring Portlet WebMVC Contributions under Apache License Version 2.0
-  Spring Security Portlet Contributions under Apache License Version 2.0
+  Spring Portlet WebMVC Contributions under Apache License, Version 2.0
+  Spring Security Portlet Contributions under Apache License, Version 2.0
   Spring TestContext Framework under The Apache Software License, Version 2.0
   Spring Web under The Apache Software License, Version 2.0
   Spring Web MVC under The Apache Software License, Version 2.0
   Spring Web Portlet under The Apache Software License, Version 2.0
+  spring-jdbc under Apache License, Version 2.0
   spring-security-core under The Apache Software License, Version 2.0
   spring-security-web under The Apache Software License, Version 2.0
+  spring-tx under Apache License, Version 2.0
 
