@@ -13,7 +13,7 @@
 
     <name>Spring Portlet WebMVC Contributions</name>
     <description>Jasig Contributions to the Spring Portlet WebMVC Framework</description>
-    
+
     <dependencies>
         <dependency>
             <groupId>commons-fileupload</groupId>
@@ -47,7 +47,7 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
-        
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
@@ -63,7 +63,7 @@
             <artifactId>servlet-api</artifactId>
             <scope>provided</scope>
         </dependency>
-        
+
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
@@ -77,7 +77,7 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>spring-test-contrib</artifactId>
-            <version>${project.version}</version>
+            <version>1.2.1-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
         <dependency>

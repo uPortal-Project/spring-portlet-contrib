@@ -13,12 +13,12 @@
 
     <name>Spring Security Portlet Contributions</name>
     <description>Jasig Contributions to the Spring Security Framework</description>
-    
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>spring-webmvc-portlet-contrib</artifactId>
-            <version>${project.version}</version>
+            <version>1.2.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -48,7 +48,7 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
-        
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
@@ -64,7 +64,7 @@
             <artifactId>servlet-api</artifactId>
             <scope>provided</scope>
         </dependency>
-        
+
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
