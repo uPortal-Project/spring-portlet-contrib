@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.jasig.springframework</groupId>
     <artifactId>spring-portlet-contrib</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Spring Portlet Contributions Parent</name>
@@ -21,7 +21,7 @@
         <connection>scm:git:git://github.com/Jasig/spring-portlet-contrib.git</connection>
         <developerConnection>scm:git:git@github.com:Jasig/spring-portlet-contrib.git</developerConnection>
         <url>https://github.com/Jasig/spring-portlet-contrib</url>
-      <tag>spring-portlet-contrib-1.2.1</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <issueManagement>
