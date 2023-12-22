@@ -50,7 +50,7 @@
         <junit.version>4.13.2</junit.version>
         <logback.version>1.4.3</logback.version>
         <mockito.version>1.10.19</mockito.version>
-        <pluto.version>2.1.0-M3</pluto.version>
+        <pluto.version>3.1.2</pluto.version>
         <portlet-api.version>2.0</portlet-api.version>
         <resource-server.version>1.0.29</resource-server.version>
         <servlet-api.version>2.5</servlet-api.version>
